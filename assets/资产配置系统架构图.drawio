@@ -5,7 +5,7 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#1a365d;" value="财富产品中台技术架构" vertex="1">
-          <mxGeometry height="40" width="400" x="400" y="20" as="geometry" />
+          <mxGeometry height="40" width="400" x="300" y="20" as="geometry" />
         </mxCell>
         <mxCell id="view_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;strokeWidth=2;" value="" vertex="1">
           <mxGeometry height="90" width="680" x="40" y="80" as="geometry" />
