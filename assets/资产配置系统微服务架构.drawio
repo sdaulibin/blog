@@ -1,0 +1,158 @@
+<mxfile host="app.diagrams.net" modified="2026-02-09T00:30:00.000Z" agent="Claude" version="1.0">
+  <diagram name="资产配置系统V3.0微服务架构" id="microservice-arch">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 标题 -->
+        <mxCell id="title" value="资产配置系统V3.0-微服务架构" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1a365d;" vertex="1" parent="1">
+          <mxGeometry x="350" y="15" width="400" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- 左侧渠道 -->
+        <mxCell id="channel_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="60" width="70" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="channel_mobile" value="手机&#xa;渠道" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="75" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="channel_pad" value="PAD&#xa;终端" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="135" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="channel_gateway" value="Spring&#xa;Cloud&#xa;Gateway" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="195" width="50" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="channel_dots" value="..." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="265" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="channel_pc" value="PC&#xa;浏览器" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="305" width="50" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- 注册中心区域 -->
+        <mxCell id="reg_center" value="注册中心&#xa;Eureka(默认)/Nacos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="60" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="config_center" value="配置中心&#xa;Nacos(可选)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="275" y="60" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="log_center" value="日志中心&#xa;ELK(可选)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="410" y="60" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="monitor_center" value="监控中心&#xa;SEE(可选)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="535" y="60" width="110" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- 业务中心区域 背景 -->
+        <mxCell id="biz_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="120" y="115" width="530" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="biz_label" value="业&#xa;务&#xa;中&#xa;心" style="text;html=1;strokeColor=none;fillColor=#43a047;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="130" width="30" height="90" as="geometry" />
+        </mxCell>
+        
+        <!-- 业务中心 - 左侧 -->
+        <mxCell id="fund_research_sys" value="基金研究子系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="125" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="asset_alloc_sys" value="资产配置子系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="245" y="125" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="platform_svc" value="平台服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#66bb6a;strokeColor=#43a047;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="130" y="165" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="schedule_center" value="调度中心" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#66bb6a;strokeColor=#43a047;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="245" y="165" width="100" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- 业务中心 - 右侧 -->
+        <mxCell id="fund_invest_sys" value="基金投顾子系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="405" y="125" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="product_center_sys" value="产品中心子系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="125" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="clearing_svc" value="清算服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#66bb6a;strokeColor=#43a047;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="405" y="165" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend_svc" value="前端服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#66bb6a;strokeColor=#43a047;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="520" y="165" width="110" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 微服务区域 背景 -->
+        <mxCell id="ms_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="120" y="250" width="530" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="ms_label" value="微&#xa;服&#xa;务" style="text;html=1;strokeColor=none;fillColor=#fb8c00;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="270" width="30" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- 微服务 - 第一行 -->
+        <mxCell id="fund_research_ms" value="基金研究微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="130" y="260" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="asset_alloc_ms" value="资产配置微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="245" y="260" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fund_invest_ms" value="基金投顾微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="405" y="260" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="product_center_ms" value="产品中心微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="520" y="260" width="110" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- 微服务 - 第二行 -->
+        <mxCell id="fund_batch_ms" value="基金研究批量清算&#xa;微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffa726;strokeColor=#fb8c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="130" y="300" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="reg_center_ms" value="注册中心微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffa726;strokeColor=#fb8c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="245" y="300" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="platform_mgmt_ms" value="平台管理微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffa726;strokeColor=#fb8c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="405" y="300" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="batch_schedule_ms" value="批量调度微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffa726;strokeColor=#fb8c00;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="520" y="300" width="110" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- 前端分发微服务 -->
+        <mxCell id="frontend_dist_ms" value="前端分发微服务" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#f57c00;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="355" width="500" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 右侧外部系统 -->
+        <mxCell id="ext_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="670" y="60" width="90" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="ext_core" value="核心系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e91e63;strokeColor=#c2185b;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="680" y="75" width="70" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ext_data" value="数据中心" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e91e63;strokeColor=#c2185b;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="680" y="120" width="70" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ext_report" value="监管报送" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e91e63;strokeColor=#c2185b;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="680" y="165" width="70" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ext_crm" value="CRM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e91e63;strokeColor=#c2185b;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="680" y="210" width="70" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ext_info" value="资讯中心" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e91e63;strokeColor=#c2185b;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="680" y="255" width="70" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- 底部说明 -->
+        <mxCell id="note1" value="1. 资配系统按功能划分为上述微服务，每个微服务即支持独立发布部署也可合并发布部署；" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="30" y="410" width="600" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="note2" value="2. 资配系统的Web请求，统一经过前端分发微服务接入，并在该服务进行编排后进行跨微服务间的业务调用，服务间采用无状态设计，服务实现不依赖框架特性；" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="30" y="430" width="750" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="note3" value="3. 可轻松适配 Sofa、TSF、Dubbo 等框架以及对应 RPC 远程调用；" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="30" y="450" width="500" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
