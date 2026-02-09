@@ -1,0 +1,247 @@
+<mxfile host="app.diagrams.net" modified="2026-02-09T07:20:00.000Z" agent="Claude" version="1.0">
+  <diagram name="财富产品平台数据流向" id="data-flow">
+    <mxGraphModel dx="1100" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 标题 -->
+        <mxCell id="title" value="财富产品平台-数据流向" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a365d;" vertex="1" parent="1">
+          <mxGeometry x="350" y="10" width="300" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 第一层：应用系统 -->
+        <mxCell id="app_label" value="① 应用系统" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#e65100;" vertex="1" parent="1">
+          <mxGeometry x="30" y="50" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="app1" value="资产配置" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="50" width="100" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="app2" value="产品中心" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="50" width="100" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="app3" value="产品研究" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="50" width="100" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="app4" value="基金投顾" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="50" width="100" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="app_more" value="..." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="50" width="50" height="35" as="geometry" />
+        </mxCell>
+        
+        <!-- 数据访问接口调用 -->
+        <mxCell id="api_label" value="数据访问接口调用" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontSize=11;fontColor=#1976d2;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="700" y="70" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow_down1" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#1976d2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="85" as="sourcePoint" />
+            <mxPoint x="400" y="115" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 第二层：查询库 -->
+        <mxCell id="query_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="30" y="120" width="800" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="query_label" value="② 查询库" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#1565c0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="125" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- 产品数据 -->
+        <mxCell id="prod_data_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="50" y="150" width="150" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_data_label" value="产品数据" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="150" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_info" value="产品信息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="market_info" value="行情信息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="125" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_index" value="产品指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_tag" value="产品标签" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="125" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 组合策略数据 -->
+        <mxCell id="strategy_data_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="215" y="150" width="150" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="strategy_data_label" value="组合策略数据" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="215" y="150" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="portfolio_info" value="组合信息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="220" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="strategy_info" value="策略信息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="290" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="index_data" value="指标数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="220" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="class_data" value="分类数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="290" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 客户数据 -->
+        <mxCell id="cust_data_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="380" y="150" width="150" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="cust_data_label" value="客户数据" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="150" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="basic_info" value="基本信息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="385" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="cust_group" value="客户分组" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="455" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="proposal" value="建议书" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="385" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="cust_tag" value="客户标签" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="455" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 资产数据 -->
+        <mxCell id="asset_data_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="545" y="150" width="150" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="asset_data_label" value="资产数据" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=11;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="545" y="150" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="asset_overview" value="资产总览" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="550" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="asset_detail" value="资产明细" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="620" y="175" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="income_detail" value="收益明细" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="550" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="asset_bill" value="资产账单" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="620" y="205" width="65" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 更多 -->
+        <mxCell id="more_data" value="..." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="710" y="180" width="50" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 数据落库标签 -->
+        <mxCell id="sink_label" value="数据落库" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontSize=11;fontColor=#7b1fa2;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="750" y="260" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow_down2" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#7b1fa2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="250" as="sourcePoint" />
+            <mxPoint x="400" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 第三层：批处理系统 -->
+        <mxCell id="batch_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7b1fa2;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="30" y="285" width="800" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="batch_label" value="③ 批处理系统" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#6a1b9a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="290" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ADS层 -->
+        <mxCell id="ads_label" value="ADS&#xa;应用数据层&#xa;(应用指标)" style="text;html=1;strokeColor=none;fillColor=#9c27b0;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="315" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ads1" value="客户指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#9c27b0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="120" y="320" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ads2" value="渠道指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#9c27b0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="200" y="320" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ads3" value="产品指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#9c27b0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="280" y="320" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ads4" value="交易指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#9c27b0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="360" y="320" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ads5" value="持仓指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#9c27b0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="440" y="320" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ads6" value="收益指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#9c27b0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="520" y="320" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ads7" value="其他指标" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#9c27b0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="600" y="320" width="70" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- DWD层 -->
+        <mxCell id="dwd_label" value="DWD&#xa;明细数据层&#xa;(稳定模型)" style="text;html=1;strokeColor=none;fillColor=#ab47bc;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="365" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="dwd" value="数据主题域（客户、基金账户、产品、渠道、参数、交易、持仓）" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#ab47bc;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="120" y="370" width="550" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ODS层 -->
+        <mxCell id="ods_label" value="ODS&#xa;操作数据层&#xa;(接口适配)" style="text;html=1;strokeColor=none;fillColor=#ba68c8;align=center;verticalAlign=middle;fontSize=10;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="410" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ods1" value="普通TA接口数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="120" y="415" width="85" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ods2" value="实时TA接口数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="215" y="415" width="85" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ods3" value="估值接口数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="310" y="415" width="75" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ods4" value="直销接口数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="395" y="415" width="75" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ods5" value="业务接口" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="480" y="415" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ods6" value="资讯数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="550" y="415" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ods7" value="...数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="620" y="415" width="50" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 数据采集同步标签 -->
+        <mxCell id="collect_label" value="数据采集同步" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;fontSize=11;fontColor=#388e3c;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="730" y="460" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow_up" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#388e3c;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="490" as="sourcePoint" />
+            <mxPoint x="400" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 第四层：源系统 -->
+        <mxCell id="source_label" value="④ 源系统" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#2e7d32;" vertex="1" parent="1">
+          <mxGeometry x="30" y="500" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="src1" value="CRM系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="495" width="110" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="src2" value="客户数据集市" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="495" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="src3" value="聚源数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="410" y="495" width="110" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="src4" value="各类业务系统" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="495" width="120" height="35" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

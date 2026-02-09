@@ -1,0 +1,157 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="财富中台-技术组件" id="tech-components">
+    <mxGraphModel dx="1215" dy="723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1a365d;" value="财富中台-技术组件" vertex="1">
+          <mxGeometry height="35" width="300" x="350" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="eureka" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="Eureka/Nacos/Consul等" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rabbitmq" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="RabbitMQ" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="quartz" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="Quartz" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="sharding" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="Sharding JDBC" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="redis" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="Redis" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="svngit" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="SVN/GIT" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="maven" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="Maven" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="hikari" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;fontColor=#1565c0;" value="Hikari/Druid" vertex="1">
+          <mxGeometry height="35" width="120" x="30" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="reg_center" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="注册中心" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mq" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="消息队列组件" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="schedule" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="定时任务组件" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="dbproxy" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="数据库分库分表&#xa;访问代理组件" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="cache" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="缓存组件" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="version" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="版本管理" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="project" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="项目管理" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="pool" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="JDBC连接池" vertex="1">
+          <mxGeometry height="35" width="100" x="165" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="feign" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;fontColor=#2e7d32;" value="Feign" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="apollo" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;fontColor=#2e7d32;" value="Apollo" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="sleuth" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;fontColor=#2e7d32;" value="Spring Cloud&#xa;Sleuth" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="elk" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;fontColor=#2e7d32;" value="ELK" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="hystrix" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;fontColor=#2e7d32;" value="Hystrix" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="springboot" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" value="SpringBoot" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="gateway" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;fontColor=#2e7d32;" value="Spring Cloud&#xa;Gateway" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="ribbon" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;fontColor=#2e7d32;" value="Spring Cloud&#xa;Ribbon" vertex="1">
+          <mxGeometry height="35" width="100" x="280" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="rpc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;" value="RPC通信组件" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="distconfig" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;" value="分布式配置" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="trace" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;" value="链路跟踪" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="logcenter" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;" value="日志中心" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="fuse" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;" value="熔断" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="devframe" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;fontColor=#ffffff;fontStyle=1;" value="开发框架" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="svcgateway" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;" value="服务网关" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="lb" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontColor=#e65100;" value="负载均衡" vertex="1">
+          <mxGeometry height="35" width="100" x="395" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="log4j2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="log4j2" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vue" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="VUE" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="poi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="POI" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="selfdev" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="XxlJob" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="idea" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="IDEA" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="jenkins" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="Jenkins" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="docker" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="Docker" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="jdbc2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;fontColor=#0277bd;" value="JDBC" vertex="1">
+          <mxGeometry height="35" width="80" x="510" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="logcomp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="日志组件" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="frontcomp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="前端组件" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="reportcomp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="报表组件" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="clearcomp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="清算调度组件" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="devtool" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="开发工具" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="cicd" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="持续集成" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="285" as="geometry" />
+        </mxCell>
+        <mxCell id="container" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="容器部署" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="dbcomp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976d2;strokeColor=#0d47a1;fontColor=#ffffff;fontStyle=1;" value="数据库组件" vertex="1">
+          <mxGeometry height="35" width="90" x="605" y="375" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,175 @@
+<mxfile host="app.diagrams.net" modified="2026-02-09T07:15:00.000Z" agent="Claude" version="1.0">
+  <diagram name="财富产品平台数据架构" id="data-arch">
+    <mxGraphModel dx="1100" dy="750" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- 标题 -->
+        <mxCell id="title" value="财富产品平台-数据架构" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a365d;" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="300" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 外部数据源 -->
+        <mxCell id="ext_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="30" y="50" width="840" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ext_label" value="外部数据源" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#e65100;" vertex="1" parent="1">
+          <mxGeometry x="40" y="55" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="crm_sys" value="CRM系统&#xa;员工/角色信息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f57c00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="75" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="cust_market" value="客户数据集市&#xa;客户/持仓数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f57c00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="75" width="130" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="agg_data" value="聚源数据&#xa;资讯/行情信息" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f57c00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="75" width="130" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="biz_sys" value="各类业务系统&#xa;产品信息/产品行情" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#f57c00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="75" width="140" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- 数据采集同步层 -->
+        <mxCell id="sync_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fb8c00;strokeColor=#ef6c00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="30" y="135" width="840" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sync_label" value="数据采集/同步" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="380" y="140" width="140" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="sync1" value="员工/角色数据同步" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;" vertex="1" parent="1">
+          <mxGeometry x="80" y="160" width="130" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sync2" value="客户/持仓数据同步" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;" vertex="1" parent="1">
+          <mxGeometry x="235" y="160" width="130" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sync3" value="资讯/行情数据同步" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;" vertex="1" parent="1">
+          <mxGeometry x="390" y="160" width="130" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sync4" value="产品信息同步" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ef6c00;" vertex="1" parent="1">
+          <mxGeometry x="545" y="160" width="110" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 资产配置系统核心 -->
+        <mxCell id="core_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976d2;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="30" y="210" width="840" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="core_label" value="资产配置系统" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#1565c0;" vertex="1" parent="1">
+          <mxGeometry x="380" y="215" width="140" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 客户数据域 -->
+        <mxCell id="cust_domain_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="cust_domain_label" value="客户数据域" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="250" width="180" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="kyc" value="KYC信息 DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="285" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="cust_pref" value="客户分险偏好 DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="315" width="110" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 产品研究数据域 -->
+        <mxCell id="prod_research_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="250" y="250" width="180" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_research_label" value="产品研究数据域" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="250" width="180" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_pool" value="产品池 DB ES" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="260" y="285" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="fund_pool" value="基金池 DB ES" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="260" y="315" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_tag" value="产品标签 DB ES" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="260" y="345" width="110" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 财富规划数据域 -->
+        <mxCell id="wealth_plan_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="450" y="250" width="180" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="wealth_plan_label" value="财富规划数据域" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="250" width="180" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="portfolio" value="组合管理 DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="460" y="285" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="strategy" value="策略管理 DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="460" y="315" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="proposal" value="建议书 DB FILE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="460" y="345" width="110" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 产品数据域 -->
+        <mxCell id="prod_data_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="650" y="250" width="180" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_data_label" value="产品数据域" style="text;html=1;strokeColor=none;fillColor=#1976d2;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#ffffff;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="250" width="180" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="prod_info" value="产品信息 DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="660" y="285" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="market_info" value="舆情信息 DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="660" y="315" width="100" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="approval_info" value="信批信息 DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1976d2;" vertex="1" parent="1">
+          <mxGeometry x="660" y="345" width="100" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- 下游应用 -->
+        <mxCell id="app_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#388e3c;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="30" y="430" width="840" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="app_label" value="下游应用" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#2e7d32;" vertex="1" parent="1">
+          <mxGeometry x="40" y="435" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="app1" value="财富顾问" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="455" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="app2" value="理财经理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="455" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="app3" value="营销工具" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="455" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="app4" value="报表导出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="455" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="app5" value="CRM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#43a047;strokeColor=#2e7d32;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="455" width="90" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- 箭头 -->
+        <mxCell id="arrow1" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="120" as="sourcePoint" />
+            <mxPoint x="450" y="135" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow2" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="195" as="sourcePoint" />
+            <mxPoint x="450" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#666666;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="410" as="sourcePoint" />
+            <mxPoint x="450" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
