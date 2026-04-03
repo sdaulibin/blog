@@ -8,7 +8,7 @@
 
 AI 时代，最难被替代的不是"会不会写代码"，而是两件事：做选择的品味和把结果做稳的工程思维。
 
-![图片](https://pbs.twimg.com/media/HARuFYNWIAA7LxM?format=jpg&name=large)
+![image.png](https://pub-b2c3af02261242b1837f9d4329c323cb.r2.dev/2026/03/61dcf6d7bb39823e95e18694fe74ea0b.png)
 
 最近看了一个 ClawdBot 创始人 Peter 的访谈《AI 是杠杆，不是替代品；编程语言不重要了，重要的是我的工程思维》。
 
