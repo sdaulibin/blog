@@ -1,0 +1,86 @@
+{
+  "topic": "城市商业银行多业务系统共用Redis实例的风险识别与物理隔离整改方案",
+  "audience": {
+    "level": "intermediate",
+    "role": "城市商业银行架构师、运维工程师、系统运行管理人员",
+    "prior_knowledge": "了解Redis基本概念和哨兵模式部署，熟悉银行业务系统架构，具备生产环境运维经验",
+    "target_outcome": "能够识别多业务共用Redis实例的稳定性风险，制定完整的物理隔离整改方案，并建立长期治理机制"
+  },
+  "language": "Chinese",
+  "user_materials": {
+    "notes": [
+      "五大业务系统共用同一Redis实例：公募基金投顾、贵金属、理财代销、财富信托、商业养老金",
+      "Redis哨兵模式部署：一主三从三哨兵",
+      "通过不同逻辑库（SELECT DB）方式隔离",
+      "生产环境多次出现大Key写入导致应用异常",
+      "淘汰策略设置不合理导致内存告警"
+    ],
+    "urls": [],
+    "files": [],
+    "named_references": [],
+    "must_use": [
+      "共享资源风险（CPU、内存、网络、进程）",
+      "全局配置冲突（内存上限、淘汰策略、持久化、连接数）",
+      "实例宕机影响所有业务",
+      "监控无法按业务维度细化",
+      "安全风险：连接后可访问所有库数据"
+    ],
+    "nice_to_use": [],
+    "do_not_use": [],
+    "style_references": [],
+    "sufficiency_tier": "rich"
+  },
+  "scope": {
+    "desired_length": "complete tutorial",
+    "chapter_count": "auto",
+    "time_budget": "",
+    "must_include": [
+      "逻辑库隔离的本质局限性分析",
+      "多业务共用实例的六大风险详解",
+      "物理隔离拆分目标架构设计",
+      "分阶段迁移实施方案",
+      "过渡期管控措施",
+      "监控体系建设",
+      "安全加固方案",
+      "长期治理机制"
+    ],
+    "avoid": [
+      "过于基础的Redis入门知识",
+      "与Redis Cluster集群方案的对比（本场景使用哨兵模式）"
+    ]
+  },
+  "research": {
+    "priority_rule": "use user-provided material as the tutorial spine; add external sources for verification, gaps, freshness",
+    "source_layers": [
+      "official Redis documentation",
+      "engineering blogs",
+      "github"
+    ],
+    "required_domains": [
+      "redis.io",
+      "antirez.com"
+    ],
+    "forbidden_domains": [],
+    "freshness_requirement": "verify current Redis best practices",
+    "external_research_level": "targeted"
+  },
+  "visuals": {
+    "one_visual_per_chapter": true,
+    "preferred_types": [
+      "layer",
+      "comparison",
+      "flow",
+      "matrix",
+      "architecture"
+    ],
+    "style_notes": "banking infrastructure diagrams, clear architecture layouts, risk matrices"
+  },
+  "outputs": [
+    "markdown",
+    "docx",
+    "pdf",
+    "html",
+    "visual-html"
+  ],
+  "citation_style": "human-readable references section"
+}

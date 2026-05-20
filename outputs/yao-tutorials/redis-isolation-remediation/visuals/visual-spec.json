@@ -1,0 +1,215 @@
+{
+  "title": "Redis 多业务共用实例风险治理与物理隔离整改",
+  "theme": {
+    "accent": "#1f4e79",
+    "accent2": "#c0392b",
+    "ink": "#111827",
+    "muted": "#5f6673",
+    "surface": "#f8f6f1",
+    "border": "#d9d6cc",
+    "paper": "#ffffff"
+  },
+  "board_style": {
+    "layout": "sticky-rail-canvas",
+    "aspect_ratio": "16:9",
+    "visual_system": "frontend-slides-first canvas board"
+  },
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "title": "为什么逻辑库不是真正的隔离",
+      "diagram_type": "comparison",
+      "layout_note": "A comparison clearly shows the difference between logical database isolation and physical instance isolation, making the risk concrete.",
+      "summary": "对比逻辑库隔离与物理实例隔离的资源模型差异，揭示逻辑库仅为命名空间而非隔离单元。",
+      "columns": [
+        {
+          "label": "逻辑库隔离（现状）",
+          "items": [
+            "共享单个事件循环",
+            "共享内存池",
+            "共享 maxmemory 配置",
+            "共享淘汰策略",
+            "共享持久化进程",
+            "共享网络带宽"
+          ]
+        },
+        {
+          "label": "物理实例隔离（目标）",
+          "items": [
+            "独立事件循环",
+            "独立内存池",
+            "独立 maxmemory 配置",
+            "独立淘汰策略",
+            "独立持久化进程",
+            "独立网络带宽"
+          ]
+        }
+      ],
+      "caption": "逻辑库只在Key命名空间层面做了区分，底层CPU、内存、网络、持久化全部共享。物理实例隔离才是真正的资源隔离。"
+    },
+    {
+      "id": "chapter-02",
+      "title": "共用实例的六大风险全景",
+      "diagram_type": "flow",
+      "layout_note": "A flow diagram shows how a single problem in one business cascades through shared resources to affect all other businesses.",
+      "summary": "展示一个业务的大Key操作如何通过共享资源传导，最终导致所有业务系统异常的完整链路。",
+      "nodes": [
+        {
+          "label": "业务A写入大Key",
+          "detail": "如贵金属行情数据未压缩"
+        },
+        {
+          "label": "Redis主线程阻塞",
+          "detail": "单线程模型，DEL/SAVE阻塞"
+        },
+        {
+          "label": "所有逻辑库响应超时",
+          "detail": "投顾、理财、信托、养老金全部受影响"
+        },
+        {
+          "label": "应用层连接池耗尽",
+          "detail": "线程等待Redis响应，无法释放"
+        },
+        {
+          "label": "业务系统级联故障",
+          "detail": "多个系统同时出现交易超时"
+        }
+      ],
+      "caption": "风险传导链路：一个大Key操作 → 主线程阻塞 → 全实例超时 → 连接池耗尽 → 多业务同时故障。这就是共用实例的核心危险。"
+    },
+    {
+      "id": "chapter-03",
+      "title": "目标架构——按业务物理拆分实例",
+      "diagram_type": "layer",
+      "layout_note": "A layer diagram shows the target deployment topology across 4 VMs with each business getting its own independent Redis instance, plus a shared 5-node Sentinel cluster.",
+      "summary": "展示4台VM上部署5套独立Redis实例的拓扑，包含各VM的Master/Slave分布和5节点共用Sentinel集群。",
+      "nodes": [
+        {
+          "label": "VM-1 (16c32g)",
+          "detail": "基金Master:6379 + 理财Slave:6381 + 养老Slave:6383 + Sentinel-1"
+        },
+        {
+          "label": "VM-2 (16c32g)",
+          "detail": "贵金属Master:6380 + 基金Slave:6379 + 信托Slave:6382 + Sentinel-2"
+        },
+        {
+          "label": "VM-3 (16c32g)",
+          "detail": "理财Master:6381 + 贵金属Slave:6380 + 养老Slave:6383 + Sentinel-3"
+        },
+        {
+          "label": "VM-4 (16c32g)",
+          "detail": "信托Master:6382 + 养老Master:6383 + Sentinel-4 + Sentinel-5"
+        },
+        {
+          "label": "5节点共用Sentinel集群",
+          "detail": "监控全部5个Master | 仲裁多数=3 | 容忍2台宕机"
+        }
+      ],
+      "caption": "4台VM承载15个数据实例和5个哨兵节点。Master与Slave分散在不同VM，同一业务的两个Slave不在同一VM。5节点Sentinel集群可容忍2台宕机。"
+    },
+    {
+      "id": "chapter-04",
+      "title": "分阶段迁移实施方案",
+      "diagram_type": "flow",
+      "layout_note": "A flow diagram shows the five migration phases as a sequential process with key deliverables at each stage.",
+      "summary": "展示从评估到下线的五个迁移阶段，每个阶段的输入、输出和关键里程碑。",
+      "nodes": [
+        {
+          "label": "阶段一：现状评估",
+          "detail": "各业务用量基线、大Key清单、QPS统计 | 1-2周"
+        },
+        {
+          "label": "阶段二：基础设施准备",
+          "detail": "5套独立实例部署、Sentinel配置、监控就绪 | 2-3周"
+        },
+        {
+          "label": "阶段三：应用侧改造",
+          "detail": "配置中心改造、Key命名规范化、TTL治理 | 2-3周"
+        },
+        {
+          "label": "阶段四：数据迁移与切换",
+          "detail": "按业务逐一切换，离线/在线迁移，灰度验证 | 1-2周"
+        },
+        {
+          "label": "阶段五：存量实例下线",
+          "detail": "保留7天只读回滚窗口，资源回收 | 1周"
+        }
+      ],
+      "caption": "迁移按评估→准备→改造→迁移→下线五个阶段推进，总周期约7-9周，每阶段有明确交付物和验收标准。"
+    },
+    {
+      "id": "chapter-05",
+      "title": "过渡期管控与大Key治理",
+      "diagram_type": "matrix",
+      "layout_note": "A matrix/decision chart shows the big key thresholds and remediation strategies by data type.",
+      "summary": "按Redis数据类型列出大Key的识别阈值、治理手段和淘汰策略选择矩阵。",
+      "quadrants": [
+        {
+          "label": "String 类型",
+          "items": ["> 10KB 告警", "> 100KB 禁止", "治理：压缩或拆分"]
+        },
+        {
+          "label": "Hash 类型",
+          "items": ["> 5000 field 告警", "治理：按分桶策略拆分为多个小Hash"]
+        },
+        {
+          "label": "List/Set/ZSet",
+          "items": ["> 5000 element 告警", "治理：分页存储或分片"]
+        },
+        {
+          "label": "淘汰策略选择",
+          "items": ["缓存型→volatile-lru", "数据型→noeviction+容量规划", "过渡期→volatile-lru全局"]
+        }
+      ],
+      "caption": "过渡期立即落地大Key巡检和淘汰策略调整，在不改变架构的前提下快速降低风险。矩阵中的阈值可根据实际业务调整。"
+    },
+    {
+      "id": "chapter-06",
+      "title": "监控体系建设",
+      "diagram_type": "layer",
+      "layout_note": "A layer diagram shows the monitoring architecture from collection to alerting to dashboard display.",
+      "summary": "展示按业务维度的三层监控架构：采集层（Exporter+Prometheus）、告警规则层、看板展示层。",
+      "nodes": [
+        {
+          "label": "采集层",
+          "detail": "每个Redis实例独立 Redis Exporter → Prometheus 采集Job"
+        },
+        {
+          "label": "告警规则层",
+          "detail": "按业务维度配置告警策略 + 业务标签，通知到对应业务责任人"
+        },
+        {
+          "label": "看板展示层",
+          "detail": "总览大盘（全部实例健康状态）+ 业务独立看板（内存/QPS/延迟/慢查询）"
+        }
+      ],
+      "caption": "监控从实例级细化为业务级：每个实例独立采集，告警按业务维度路由，看板支持总览和下钻，实现问题秒级定位。"
+    },
+    {
+      "id": "chapter-07",
+      "title": "安全加固与长期治理机制",
+      "diagram_type": "flow",
+      "layout_note": "A flow diagram shows the security hardening measures and the long-term governance workflow.",
+      "summary": "展示安全加固的三道防线（ACL、网络隔离、命名规范）和长期治理的准入-变更-审计闭环。",
+      "nodes": [
+        {
+          "label": "第一道防线：ACL访问控制",
+          "detail": "Redis 6.0+ 为每个业务创建独立用户，限制Key前缀和命令"
+        },
+        {
+          "label": "第二道防线：网络隔离",
+          "detail": "安全组限制仅对应业务应用IP可访问，禁用危险命令"
+        },
+        {
+          "label": "第三道防线：命名与TTL规范",
+          "detail": "强制 {业务}:{模块}:{实体}:{ID} 格式，所有缓存Key必须设TTL"
+        },
+        {
+          "label": "治理闭环：准入→变更→审计",
+          "detail": "新业务必须申请独立实例，配置变更走审批流程，季度容量评估"
+        }
+      ],
+      "caption": "安全加固从访问控制、网络隔离、数据规范三道防线入手，配合准入-变更-审计的治理闭环，从源头防止问题回潮。"
+    }
+  ]
+}

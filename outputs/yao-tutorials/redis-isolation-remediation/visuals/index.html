@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Redis 多业务共用实例风险治理与物理隔离整改</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #5f6673;
+      --accent: #1f4e79;
+      --accent2: #c0392b;
+      --border: #d9d6cc;
+      --surface: #f8f6f1;
+      --paper: #ffffff;
+      --canvas: #f2f0ea;
+      --grid: #e8e4da;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 1.4px),
+        var(--canvas);
+      background-size: 26px 26px;
+      color: var(--ink);
+      font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", system-ui, sans-serif;
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(260px, 330px) minmax(0, 1fr);
+      gap: clamp(24px, 4vw, 56px);
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: clamp(24px, 4vw, 56px);
+    }
+    .rail {
+      position: sticky;
+      top: 32px;
+      align-self: start;
+      min-height: calc(100vh - 64px);
+      padding-right: 20px;
+      border-right: 1px solid var(--border);
+    }
+    .rail h1 {
+      margin: 0;
+      padding-bottom: 18px;
+      border-bottom: 2px solid var(--accent);
+      font-size: clamp(1.45rem, 2.3vw, 2.35rem);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+    .rail nav {
+      display: grid;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .rail a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.94rem;
+      line-height: 1.35;
+    }
+    .rail a:hover {
+      color: var(--ink);
+    }
+    .rail span {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--accent);
+      font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .workspace {
+      display: grid;
+      gap: clamp(34px, 5vw, 72px);
+    }
+    .chapter {
+      scroll-margin-top: 32px;
+    }
+    p {
+      margin: 0;
+      line-height: 1.6;
+    }
+    .artboard {
+      margin: 0;
+      aspect-ratio: 16 / 9;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--paper);
+      overflow: hidden;
+    }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .caption {
+      margin: 12px auto 0;
+      max-width: 820px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 860px) {
+      .shell {
+        display: block;
+        padding: 20px;
+      }
+      .rail {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        min-height: auto;
+        margin: -20px -20px 28px;
+        padding: 18px 20px 16px;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+        background: color-mix(in srgb, var(--canvas) 92%, white);
+      }
+      .rail h1 {
+        font-size: 1.6rem;
+      }
+      .rail nav {
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(140px, 1fr);
+        overflow-x: auto;
+        gap: 16px;
+      }
+      .workspace {
+        gap: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <h1>Redis 多业务共用实例风险治理与物理隔离整改</h1>
+      <nav>
+        <a href="#chapter-01"><span>第1章</span>为什么逻辑库不是真正的隔离</a><a href="#chapter-02"><span>第2章</span>共用实例的六大风险全景</a><a href="#chapter-03"><span>第3章</span>目标架构——按业务物理拆分实例</a><a href="#chapter-04"><span>第4章</span>分阶段迁移实施方案</a><a href="#chapter-05"><span>第5章</span>过渡期管控与大Key治理</a><a href="#chapter-06"><span>第6章</span>监控体系建设</a><a href="#chapter-07"><span>第7章</span>安全加固与长期治理机制</a>
+      </nav>
+    </aside>
+    <main class="workspace">
+      <section class="chapter" id="chapter-01">
+  <figure class="artboard">
+    <img src="chapter-01.svg" alt="第1章：为什么逻辑库不是真正的隔离 diagram">
+  </figure>
+  <p class="caption">逻辑库只在Key命名空间层面做了区分，底层CPU、内存、网络、持久化全部共享。物理实例隔离才是真正的资源隔离。</p>
+</section><section class="chapter" id="chapter-02">
+  <figure class="artboard">
+    <img src="chapter-02.svg" alt="第2章：共用实例的六大风险全景 diagram">
+  </figure>
+  <p class="caption">风险传导链路：一个大Key操作 → 主线程阻塞 → 全实例超时 → 连接池耗尽 → 多业务同时故障。这就是共用实例的核心危险。</p>
+</section><section class="chapter" id="chapter-03">
+  <figure class="artboard">
+    <img src="chapter-03.svg" alt="第3章：目标架构——按业务物理拆分实例 diagram">
+  </figure>
+  <p class="caption">4台VM承载15个数据实例和5个哨兵节点。Master与Slave分散在不同VM，同一业务的两个Slave不在同一VM。5节点Sentinel集群可容忍2台宕机。</p>
+</section><section class="chapter" id="chapter-04">
+  <figure class="artboard">
+    <img src="chapter-04.svg" alt="第4章：分阶段迁移实施方案 diagram">
+  </figure>
+  <p class="caption">迁移按评估→准备→改造→迁移→下线五个阶段推进，总周期约7-9周，每阶段有明确交付物和验收标准。</p>
+</section><section class="chapter" id="chapter-05">
+  <figure class="artboard">
+    <img src="chapter-05.svg" alt="第5章：过渡期管控与大Key治理 diagram">
+  </figure>
+  <p class="caption">过渡期立即落地大Key巡检和淘汰策略调整，在不改变架构的前提下快速降低风险。矩阵中的阈值可根据实际业务调整。</p>
+</section><section class="chapter" id="chapter-06">
+  <figure class="artboard">
+    <img src="chapter-06.svg" alt="第6章：监控体系建设 diagram">
+  </figure>
+  <p class="caption">监控从实例级细化为业务级：每个实例独立采集，告警按业务维度路由，看板支持总览和下钻，实现问题秒级定位。</p>
+</section><section class="chapter" id="chapter-07">
+  <figure class="artboard">
+    <img src="chapter-07.svg" alt="第7章：安全加固与长期治理机制 diagram">
+  </figure>
+  <p class="caption">安全加固从访问控制、网络隔离、数据规范三道防线入手，配合准入-变更-审计的治理闭环，从源头防止问题回潮。</p>
+</section>
+    </main>
+  </div>
+</body>
+</html>
