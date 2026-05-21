@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="分阶段迁移实施方案" font-family="Noto Sans SC, Source Han Sans SC, PingFang SC, system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Redis 应用开发规范" font-family="Noto Sans SC, Source Han Sans SC, PingFang SC, system-ui, sans-serif">
   <defs>
     <filter id="soft-shadow" x="-8%" y="-12%" width="116%" height="128%">
       <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#111827" flood-opacity="0.08"/>
@@ -17,39 +17,33 @@
   <text x="84" y="82" fill="#1f4e79" font-size="12" font-weight="800" letter-spacing="1.2">第4章</text>
   <text x="1116" y="82" text-anchor="end" fill="#5f6673" font-size="11" font-weight="700" letter-spacing="1">教学图示</text>
   <rect x="84" y="100" width="54" height="4" rx="2" fill="#1f4e79"/>
-  <text x="84.0" y="136.0" text-anchor="start" fill="#111827" font-size="31" font-weight="800"><tspan x="84.0" dy="0">分阶段迁移实施方案</tspan></text>
-  <text x="84.0" y="178.0" text-anchor="start" fill="#5f6673" font-size="15" font-weight="500"><tspan x="84.0" dy="0">展示从评估到下线的五个迁移阶段，每个阶段的输入、输出和关键里程碑。</tspan></text>
-  <text x="94" y="252" fill="#5f6673" font-size="12" font-weight="700">从输入到结果的最短学习路径</text>
-  <line x1="94" y1="274" x2="1106" y2="274" stroke="#d9d6cc" stroke-width="1.4"/>
-  <line x1="290.0" y1="408.0" x2="292.0" y2="408.0" stroke="#1f4e79" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
-  <rect x="94.0" y="334.0" width="188.0" height="148.0" rx="8" fill="#f7f5ee" stroke="#1f4e79" stroke-width="1.4" filter="url(#soft-shadow)"/>
-  <rect x="94.0" y="334.0" width="188.0" height="5" rx="2.5" fill="#1f4e79"/>
-  <circle cx="120.0" cy="362.0" r="15" fill="#1f4e79"/>
-  <text x="120.0" y="367.0" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="800"><tspan x="120.0" dy="0">1</tspan></text>
-  <text x="146.0" y="367.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="146.0" dy="0">阶段一：现状评估</tspan></text>
-  <text x="116.0" y="454.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="116.0" dy="0">各业务用量基线、大Key清单、QPS统计 |</tspan><tspan x="116.0" dy="16">1-2周</tspan></text>
-  <line x1="496.0" y1="408.0" x2="498.0" y2="408.0" stroke="#1f4e79" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
-  <rect x="300.0" y="334.0" width="188.0" height="148.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
-  <circle cx="326.0" cy="362.0" r="15" fill="#1f4e79"/>
-  <text x="326.0" y="367.0" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="800"><tspan x="326.0" dy="0">2</tspan></text>
-  <text x="352.0" y="367.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="352.0" dy="0">阶段二：基础设施准备</tspan></text>
-  <text x="322.0" y="454.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="322.0" dy="0">5套独立实例部署、Sentinel配置、监控就绪</tspan><tspan x="322.0" dy="16">| 2-3周</tspan></text>
-  <line x1="702.0" y1="408.0" x2="704.0" y2="408.0" stroke="#1f4e79" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
-  <rect x="506.0" y="334.0" width="188.0" height="148.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
-  <circle cx="532.0" cy="362.0" r="15" fill="#1f4e79"/>
-  <text x="532.0" y="367.0" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="800"><tspan x="532.0" dy="0">3</tspan></text>
-  <text x="558.0" y="367.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="558.0" dy="0">阶段三：应用侧改造</tspan></text>
-  <text x="528.0" y="454.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="528.0" dy="0">配置中心改造、Key命名规范化、TTL治理</tspan><tspan x="528.0" dy="16">| 2-3周</tspan></text>
-  <line x1="908.0" y1="408.0" x2="910.0" y2="408.0" stroke="#1f4e79" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
-  <rect x="712.0" y="334.0" width="188.0" height="148.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
-  <circle cx="738.0" cy="362.0" r="15" fill="#1f4e79"/>
-  <text x="738.0" y="367.0" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="800"><tspan x="738.0" dy="0">4</tspan></text>
-  <text x="764.0" y="367.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="764.0" dy="0">阶段四：数据迁移与切换</tspan></text>
-  <text x="734.0" y="454.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="734.0" dy="0">按业务逐一切换，离线/在线迁移，灰度验证 |</tspan><tspan x="734.0" dy="16">1-2周</tspan></text>
-  <rect x="918.0" y="334.0" width="188.0" height="148.0" rx="8" fill="#f7f5ee" stroke="#1f4e79" stroke-width="1.4" filter="url(#soft-shadow)"/>
-  <rect x="918.0" y="334.0" width="188.0" height="5" rx="2.5" fill="#1f4e79"/>
-  <circle cx="944.0" cy="362.0" r="15" fill="#1f4e79"/>
-  <text x="944.0" y="367.0" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="800"><tspan x="944.0" dy="0">5</tspan></text>
-  <text x="970.0" y="367.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="970.0" dy="0">阶段五：存量实例下线</tspan></text>
-  <text x="940.0" y="454.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="940.0" dy="0">保留7天只读回滚窗口，资源回收 | 1周</tspan></text>
+  <text x="84.0" y="136.0" text-anchor="start" fill="#111827" font-size="31" font-weight="800"><tspan x="84.0" dy="0">Redis 应用开发规范</tspan></text>
+  <text x="84.0" y="178.0" text-anchor="start" fill="#5f6673" font-size="15" font-weight="500"><tspan x="84.0" dy="0">以思维导图展示Redis开发规范的六大核心领域：Key设计、序列化、大Key预防、命令规范、连接池、容错降级。</tspan></text>
+  <line x1="600.0" y1="408.0" x2="414.0" y2="289.0" stroke="#d9d6cc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="600.0" y1="408.0" x2="802.0" y2="289.0" stroke="#d9d6cc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="600.0" y1="408.0" x2="368.0" y2="415.0" stroke="#d9d6cc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="600.0" y1="408.0" x2="848.0" y2="415.0" stroke="#d9d6cc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="600.0" y1="408.0" x2="414.0" y2="541.0" stroke="#d9d6cc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="600.0" y1="408.0" x2="802.0" y2="541.0" stroke="#d9d6cc" stroke-width="2" stroke-linecap="round"/>
+  <rect x="452" y="350" width="296" height="116" rx="14" fill="#1f4e79"/>
+  <text x="600.0" y="404.0" text-anchor="middle" fill="#ffffff" font-size="21" font-weight="800"><tspan x="600.0" dy="0">Redis 应用开发规范</tspan></text>
+  <rect x="210.0" y="246.0" width="204.0" height="86.0" rx="8" fill="#f7f5ee" stroke="#1f4e79" stroke-width="1.4" filter="url(#soft-shadow)"/>
+  <rect x="210.0" y="246.0" width="204.0" height="5" rx="2.5" fill="#1f4e79"/>
+  <text x="232.0" y="279.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="232.0" dy="0">Key设计</tspan></text>
+  <text x="232.0" y="304.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="232.0" dy="0">{业务}:{模块}:{实体}:{ID} |</tspan><tspan x="232.0" dy="16">冒号分隔 | 长度&lt;200字节 |</tspan></text>
+  <rect x="802.0" y="246.0" width="204.0" height="86.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
+  <text x="824.0" y="279.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="824.0" dy="0">序列化选择</tspan></text>
+  <text x="824.0" y="304.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="824.0" dy="0">禁用JDK序列化 |</tspan><tspan x="824.0" dy="16">优先JSON/Protobuf |</tspan></text>
+  <rect x="164.0" y="372.0" width="204.0" height="86.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
+  <text x="186.0" y="405.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="186.0" dy="0">大Key预防</tspan></text>
+  <text x="186.0" y="430.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="186.0" dy="0">String&lt;10KB |</tspan><tspan x="186.0" dy="16">Hash&lt;1000字段 |</tspan></text>
+  <rect x="848.0" y="372.0" width="204.0" height="86.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
+  <text x="870.0" y="405.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="870.0" dy="0">命令规范</tspan></text>
+  <text x="870.0" y="430.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="870.0" dy="0">禁KEYS/FLUSHALL |</tspan><tspan x="870.0" dy="16">用SCAN替代 | Pipeline批量操作</tspan></text>
+  <rect x="210.0" y="498.0" width="204.0" height="86.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
+  <text x="232.0" y="531.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="232.0" dy="0">连接池配置</tspan></text>
+  <text x="232.0" y="556.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="232.0" dy="0">max-active≤maxclients/实例数</tspan><tspan x="232.0" dy="16">| 设max-wait超时 |</tspan></text>
+  <rect x="802.0" y="498.0" width="204.0" height="86.0" rx="8" fill="#faf9f5" stroke="#d9d6cc" stroke-width="1.4" filter="url(#soft-shadow)"/>
+  <text x="824.0" y="531.0" text-anchor="start" fill="#111827" font-size="17" font-weight="760"><tspan x="824.0" dy="0">容错降级</tspan></text>
+  <text x="824.0" y="556.0" text-anchor="start" fill="#5f6673" font-size="12" font-weight="560"><tspan x="824.0" dy="0">try-catch包裹 | 缓存非唯一来源</tspan><tspan x="824.0" dy="16">| 断路器模式 | 异步回写</tspan></text>
 </svg>

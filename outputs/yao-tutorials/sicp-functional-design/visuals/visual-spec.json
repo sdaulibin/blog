@@ -1,0 +1,280 @@
+{
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "title": "平台架构分层图",
+      "diagram_type": "layer",
+      "summary": "展示平台三层架构：用户界面层、业务逻辑层、数据存储层",
+      "nodes": [
+        {
+          "label": "用户界面层",
+          "detail": "Streamlit · 7模块 · 20页面"
+        },
+        {
+          "label": "业务逻辑层",
+          "detail": "解析器 · LLM引擎 · 计算器 · 本体管理"
+        },
+        {
+          "label": "数据存储层",
+          "detail": "SQLite · Owlready2 quadstore · 文件系统 · DashScope API"
+        }
+      ],
+      "caption": "策速平台三层架构：UI 层负责交互，逻辑层处理业务，存储层持久化数据"
+    },
+    {
+      "id": "chapter-02",
+      "title": "文档解析流程图",
+      "diagram_type": "flow",
+      "summary": "展示从文件上传到结构化数据提取的完整流程",
+      "nodes": [
+        {
+          "label": "文件上传",
+          "detail": ".docx / .pdf"
+        },
+        {
+          "label": "格式检测",
+          "detail": "SHA-256 去重"
+        },
+        {
+          "label": "解析引擎",
+          "detail": "标准/大纲/自由 三模式"
+        },
+        {
+          "label": "结构化提取",
+          "detail": "KV对/数据矩阵/分组/表格"
+        },
+        {
+          "label": "数值归一化",
+          "detail": "千分位/百分比/符号/空值"
+        },
+        {
+          "label": "写入数据库",
+          "detail": "structured_items + structured_tables"
+        }
+      ],
+      "caption": "文档解析流程：上传 → 去重 → 解析 → 提取 → 归一化 → 入库"
+    },
+    {
+      "id": "chapter-03",
+      "title": "财务指标计算管线",
+      "diagram_type": "flow",
+      "summary": "展示基础指标查找到计算指标求值的完整管线",
+      "nodes": [
+        {
+          "label": "指标配置",
+          "detail": "234项 · 基础+计算 两层"
+        },
+        {
+          "label": "基础指标查找",
+          "detail": "路径匹配 + 行列定位"
+        },
+        {
+          "label": "拓扑排序",
+          "detail": "依赖解析 · 循环检测"
+        },
+        {
+          "label": "AST安全求值",
+          "detail": "白名单函数 · 沙箱"
+        },
+        {
+          "label": "风险判断",
+          "detail": "gt/lt/eq · 标准值比较"
+        },
+        {
+          "label": "可信度评级",
+          "detail": "极高/高/中/低 四级"
+        }
+      ],
+      "caption": "财务指标计算管线：配置 → 查找 → 排序 → 求值 → 判断 → 评级"
+    },
+    {
+      "id": "chapter-04",
+      "title": "多模型并行分析架构",
+      "diagram_type": "flow",
+      "summary": "展示多模型并行LLM分析的调度架构",
+      "nodes": [
+        {
+          "label": "上下文构建",
+          "detail": "结构化/原始文档 两种模式"
+        },
+        {
+          "label": "提示词填充",
+          "detail": "system + user template"
+        },
+        {
+          "label": "多模型并行",
+          "detail": "ThreadPoolExecutor · max 8"
+        },
+        {
+          "label": "JSON解析",
+          "detail": "多策略回退"
+        },
+        {
+          "label": "证据溯源",
+          "detail": "定位索引 → 书签匹配"
+        },
+        {
+          "label": "结果入库",
+          "detail": "biz_results + call_log"
+        }
+      ],
+      "caption": "多模型并行分析：上下文 → 提示词 → 并行调用 → 解析 → 溯源 → 入库"
+    },
+    {
+      "id": "chapter-05",
+      "title": "智能打标流程",
+      "diagram_type": "flow",
+      "summary": "展示多文档多模型打标和复核的完整流程",
+      "nodes": [
+        {
+          "label": "标签配置",
+          "detail": "L1定位/L2风险/L3事件"
+        },
+        {
+          "label": "会话创建",
+          "detail": "配置快照 · 多文档联合"
+        },
+        {
+          "label": "多模型打标",
+          "detail": "并行 · 置信度评分"
+        },
+        {
+          "label": "多模型对比",
+          "detail": "共识 · 分歧标注"
+        },
+        {
+          "label": "人工复核",
+          "detail": "确认/丢弃/重置"
+        },
+        {
+          "label": "查询统计",
+          "detail": "标签云/组合/文档/统计"
+        }
+      ],
+      "caption": "智能打标流程：配置 → 会话 → 打标 → 对比 → 复核 → 查询"
+    },
+    {
+      "id": "chapter-06",
+      "title": "制度规则提取流程",
+      "diagram_type": "flow",
+      "summary": "展示从制度文档中提取结构化规则的流程",
+      "nodes": [
+        {
+          "label": "制度文档",
+          "detail": "credit_regulation 类别"
+        },
+        {
+          "label": "粒度切分",
+          "detail": "整篇/按章/按条"
+        },
+        {
+          "label": "规则提取",
+          "detail": "多模型 × 多段并行"
+        },
+        {
+          "label": "结果摄入",
+          "detail": "类型/硬度/动作归一化"
+        },
+        {
+          "label": "对象发现",
+          "detail": "新对象入待确认队列"
+        },
+        {
+          "label": "多维过滤导出",
+          "detail": "Excel/CSV"
+        }
+      ],
+      "caption": "制度规则提取：文档 → 切分 → 提取 → 摄入 → 对象发现 → 导出"
+    },
+    {
+      "id": "chapter-07",
+      "title": "本体知识图谱架构",
+      "diagram_type": "network",
+      "summary": "展示OWL本体的类/属性/规则/实例层次结构",
+      "nodes": [
+        {
+          "label": "OWL类层次",
+          "detail": "贷款产品/业务主体/授信要素/规则"
+        },
+        {
+          "label": "对象属性",
+          "detail": "hasLoan/hasGuarantee/domain+range"
+        },
+        {
+          "label": "数据属性",
+          "detail": "hasAmount(decimal)/hasName(string)"
+        },
+        {
+          "label": "SWRL规则",
+          "detail": "DNF分解 → 多条标准SWRL"
+        },
+        {
+          "label": "OWL推理机",
+          "detail": "HermiT/Pellet → 隐含结论"
+        },
+        {
+          "label": "政策实例(ABox)",
+          "detail": "Individual + 关系链接"
+        }
+      ],
+      "edges": [
+        {
+          "from": "OWL类层次",
+          "to": "对象属性",
+          "label": "domain/range"
+        },
+        {
+          "from": "OWL类层次",
+          "to": "数据属性",
+          "label": "domain"
+        },
+        {
+          "from": "对象属性",
+          "to": "SWRL规则",
+          "label": "变量绑定"
+        },
+        {
+          "from": "数据属性",
+          "to": "SWRL规则",
+          "label": "条件比较"
+        },
+        {
+          "from": "SWRL规则",
+          "to": "OWL推理机",
+          "label": "执行推理"
+        },
+        {
+          "from": "OWL类层次",
+          "to": "政策实例(ABox)",
+          "label": "instanceof"
+        }
+      ],
+      "caption": "本体知识图谱：类定义 → 属性建模 → 规则形式化 → 推理 → 实例化"
+    },
+    {
+      "id": "chapter-08",
+      "title": "全局技术架构",
+      "diagram_type": "layer",
+      "summary": "展示平台全局技术架构和模块间数据流",
+      "nodes": [
+        {
+          "label": "用户界面",
+          "detail": "Streamlit · 侧边栏导航 · 组件库"
+        },
+        {
+          "label": "业务模块",
+          "detail": "结构化 · 财务 · 分析 · 打标 · 制度 · 本体"
+        },
+        {
+          "label": "通用服务",
+          "detail": "LLM适配 · 并发控制 · 超时 · JSON容错 · 书签溯源"
+        },
+        {
+          "label": "数据层",
+          "detail": "SQLite(28表) · Owlready2 quadstore · DashScope · 文件系统"
+        }
+      ],
+      "caption": "全局技术架构：UI → 业务模块 → 通用服务 → 数据层"
+    }
+  ]
+}

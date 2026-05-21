@@ -1,0 +1,55 @@
+{
+  "topic": "策速 · 尽调分析平台 — 功能设计文档",
+  "audience": {
+    "level": "intermediate",
+    "role": "技术架构师、产品经理、开发工程师",
+    "prior_knowledge": "了解银行信贷业务基本流程，熟悉 Python Web 开发",
+    "target_outcome": "理解平台的完整功能架构、运行逻辑、技术栈选型，以及本体论引擎在信贷知识建模中的应用"
+  },
+  "language": "zh-CN",
+  "user_materials": {
+    "notes": ["项目完整源码分析"],
+    "urls": [],
+    "files": [
+      "/Users/binginx/workspace/qingdao/app.py",
+      "/Users/binginx/workspace/qingdao/config.yaml",
+      "/Users/binginx/workspace/qingdao/src/db/operations.py",
+      "/Users/binginx/workspace/qingdao/src/llm/biz_analyzer.py",
+      "/Users/binginx/workspace/qingdao/src/ontology/owl_store.py",
+      "/Users/binginx/workspace/qingdao/项目设计说明书.md"
+    ],
+    "named_references": ["项目源码全量阅读分析"],
+    "must_use": ["项目源码"],
+    "nice_to_use": [],
+    "do_not_use": [],
+    "style_references": [],
+    "sufficiency_tier": "rich"
+  },
+  "scope": {
+    "desired_length": "complete tutorial",
+    "chapter_count": "8",
+    "time_budget": "",
+    "must_include": [
+      "七大功能模块的具体功能和运行逻辑",
+      "每个功能的后端技术栈",
+      "本体论在项目中的应用",
+      "数据流和架构关系"
+    ],
+    "avoid": ["纯前端 CSS/样式细节"]
+  },
+  "research": {
+    "priority_rule": "use user-provided material as the tutorial spine when it is strong enough; add external sources for verification, gaps, freshness, and counterexamples",
+    "source_layers": ["official", "github"],
+    "required_domains": [],
+    "forbidden_domains": [],
+    "freshness_requirement": "verify current facts before writing",
+    "external_research_level": "gap-check"
+  },
+  "visuals": {
+    "one_visual_per_chapter": true,
+    "preferred_types": ["layer", "flow", "network", "matrix", "architecture"],
+    "style_notes": "clear, architectural, technical diagram"
+  },
+  "outputs": ["markdown"],
+  "citation_style": "inline source IDs plus source appendix"
+}

@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Redis 多业务共用实例风险治理与物理隔离整改</title>
+  <title>Tutorial Visual Pack</title>
   <style>
     :root {
       --ink: #111827;
       --muted: #5f6673;
       --accent: #1f4e79;
-      --accent2: #c0392b;
+      --accent2: #6f7682;
       --border: #d9d6cc;
-      --surface: #f8f6f1;
-      --paper: #ffffff;
+      --surface: #f5f4ed;
+      --paper: #faf9f5;
       --canvas: #f2f0ea;
       --grid: #e8e4da;
     }
@@ -143,52 +143,52 @@
 <body>
   <div class="shell">
     <aside class="rail">
-      <h1>Redis 多业务共用实例风险治理与物理隔离整改</h1>
+      <h1>Tutorial Visual Pack</h1>
       <nav>
-        <a href="#chapter-01"><span>第1章</span>为什么逻辑库不是真正的隔离</a><a href="#chapter-02"><span>第2章</span>共用实例的六大风险全景</a><a href="#chapter-03"><span>第3章</span>目标架构——按业务物理拆分实例</a><a href="#chapter-04"><span>第4章</span>Redis 应用开发规范</a><a href="#chapter-05"><span>第5章</span>分阶段迁移实施方案</a><a href="#chapter-06"><span>第6章</span>过渡期管控与大Key治理</a><a href="#chapter-07"><span>第7章</span>监控体系建设</a><a href="#chapter-08"><span>第8章</span>安全加固与长期治理机制</a>
+        <a href="#chapter-01"><span>第1章</span>平台架构分层图</a><a href="#chapter-02"><span>第2章</span>文档解析流程图</a><a href="#chapter-03"><span>第3章</span>财务指标计算管线</a><a href="#chapter-04"><span>第4章</span>多模型并行分析架构</a><a href="#chapter-05"><span>第5章</span>智能打标流程</a><a href="#chapter-06"><span>第6章</span>制度规则提取流程</a><a href="#chapter-07"><span>第7章</span>本体知识图谱架构</a><a href="#chapter-08"><span>第8章</span>全局技术架构</a>
       </nav>
     </aside>
     <main class="workspace">
       <section class="chapter" id="chapter-01">
   <figure class="artboard">
-    <img src="chapter-01.svg" alt="第1章：为什么逻辑库不是真正的隔离 diagram">
+    <img src="chapter-01.svg" alt="第1章：平台架构分层图 diagram">
   </figure>
-  <p class="caption">逻辑库只在Key命名空间层面做了区分，底层CPU、内存、网络、持久化全部共享。物理实例隔离才是真正的资源隔离。</p>
+  <p class="caption">策速平台三层架构：UI 层负责交互，逻辑层处理业务，存储层持久化数据</p>
 </section><section class="chapter" id="chapter-02">
   <figure class="artboard">
-    <img src="chapter-02.svg" alt="第2章：共用实例的六大风险全景 diagram">
+    <img src="chapter-02.svg" alt="第2章：文档解析流程图 diagram">
   </figure>
-  <p class="caption">风险传导链路：一个大Key操作 → 主线程阻塞 → 全实例超时 → 连接池耗尽 → 多业务同时故障。这就是共用实例的核心危险。</p>
+  <p class="caption">文档解析流程：上传 → 去重 → 解析 → 提取 → 归一化 → 入库</p>
 </section><section class="chapter" id="chapter-03">
   <figure class="artboard">
-    <img src="chapter-03.svg" alt="第3章：目标架构——按业务物理拆分实例 diagram">
+    <img src="chapter-03.svg" alt="第3章：财务指标计算管线 diagram">
   </figure>
-  <p class="caption">4台VM承载15个数据实例和5个哨兵节点。Master与Slave分散在不同VM，同一业务的两个Slave不在同一VM。5节点Sentinel集群可容忍2台宕机。</p>
+  <p class="caption">财务指标计算管线：配置 → 查找 → 排序 → 求值 → 判断 → 评级</p>
 </section><section class="chapter" id="chapter-04">
   <figure class="artboard">
-    <img src="chapter-04.svg" alt="第4章：Redis 应用开发规范 diagram">
+    <img src="chapter-04.svg" alt="第4章：多模型并行分析架构 diagram">
   </figure>
-  <p class="caption">Redis开发规范的六大核心领域，覆盖从数据设计到容错降级的完整生命周期。每个领域的规范项都是生产环境故障的常见根源。</p>
+  <p class="caption">多模型并行分析：上下文 → 提示词 → 并行调用 → 解析 → 溯源 → 入库</p>
 </section><section class="chapter" id="chapter-05">
   <figure class="artboard">
-    <img src="chapter-05.svg" alt="第5章：分阶段迁移实施方案 diagram">
+    <img src="chapter-05.svg" alt="第5章：智能打标流程 diagram">
   </figure>
-  <p class="caption">迁移按评估→准备→改造→迁移→下线五个阶段推进，总周期约7-9周，每阶段有明确交付物和验收标准。</p>
+  <p class="caption">智能打标流程：配置 → 会话 → 打标 → 对比 → 复核 → 查询</p>
 </section><section class="chapter" id="chapter-06">
   <figure class="artboard">
-    <img src="chapter-06.svg" alt="第6章：过渡期管控与大Key治理 diagram">
+    <img src="chapter-06.svg" alt="第6章：制度规则提取流程 diagram">
   </figure>
-  <p class="caption">过渡期立即落地大Key巡检和淘汰策略调整，在不改变架构的前提下快速降低风险。矩阵中的阈值可根据实际业务调整。</p>
+  <p class="caption">制度规则提取：文档 → 切分 → 提取 → 摄入 → 对象发现 → 导出</p>
 </section><section class="chapter" id="chapter-07">
   <figure class="artboard">
-    <img src="chapter-07.svg" alt="第7章：监控体系建设 diagram">
+    <img src="chapter-07.svg" alt="第7章：本体知识图谱架构 diagram">
   </figure>
-  <p class="caption">监控从实例级细化为业务级：每个实例独立采集，告警按业务维度路由，看板支持总览和下钻，实现问题秒级定位。</p>
+  <p class="caption">本体知识图谱：类定义 → 属性建模 → 规则形式化 → 推理 → 实例化</p>
 </section><section class="chapter" id="chapter-08">
   <figure class="artboard">
-    <img src="chapter-08.svg" alt="第8章：安全加固与长期治理机制 diagram">
+    <img src="chapter-08.svg" alt="第8章：全局技术架构 diagram">
   </figure>
-  <p class="caption">安全加固从访问控制、网络隔离、数据规范三道防线入手，配合准入-变更-审计的治理闭环，从源头防止问题回潮。</p>
+  <p class="caption">全局技术架构：UI → 业务模块 → 通用服务 → 数据层</p>
 </section>
     </main>
   </div>

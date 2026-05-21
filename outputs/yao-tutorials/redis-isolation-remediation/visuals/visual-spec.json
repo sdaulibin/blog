@@ -109,6 +109,40 @@
     },
     {
       "id": "chapter-04",
+      "title": "Redis 应用开发规范",
+      "diagram_type": "mindmap",
+      "layout_note": "A mindmap shows the six areas of Redis development standards radiating from a central concept, making the scope of the standards visible at a glance.",
+      "summary": "以思维导图展示Redis开发规范的六大核心领域：Key设计、序列化、大Key预防、命令规范、连接池、容错降级。",
+      "nodes": [
+        {
+          "label": "Key设计",
+          "detail": "{业务}:{模块}:{实体}:{ID} | 冒号分隔 | 长度<200字节 | 禁止无限Key空间"
+        },
+        {
+          "label": "序列化选择",
+          "detail": "禁用JDK序列化 | 优先JSON/Protobuf | 数值直接用String | 对象用Hash"
+        },
+        {
+          "label": "大Key预防",
+          "detail": "String<10KB | Hash<1000字段 | 集合<5000元素 | 超限必须拆分"
+        },
+        {
+          "label": "命令规范",
+          "detail": "禁KEYS/FLUSHALL | 用SCAN替代 | Pipeline批量操作 | 单批<500条"
+        },
+        {
+          "label": "连接池配置",
+          "detail": "max-active≤maxclients/实例数 | 设max-wait超时 | timeout 2-5秒"
+        },
+        {
+          "label": "容错降级",
+          "detail": "try-catch包裹 | 缓存非唯一来源 | 断路器模式 | 异步回写"
+        }
+      ],
+      "caption": "Redis开发规范的六大核心领域，覆盖从数据设计到容错降级的完整生命周期。每个领域的规范项都是生产环境故障的常见根源。"
+    },
+    {
+      "id": "chapter-05",
       "title": "分阶段迁移实施方案",
       "diagram_type": "flow",
       "layout_note": "A flow diagram shows the five migration phases as a sequential process with key deliverables at each stage.",
@@ -138,7 +172,7 @@
       "caption": "迁移按评估→准备→改造→迁移→下线五个阶段推进，总周期约7-9周，每阶段有明确交付物和验收标准。"
     },
     {
-      "id": "chapter-05",
+      "id": "chapter-06",
       "title": "过渡期管控与大Key治理",
       "diagram_type": "matrix",
       "layout_note": "A matrix/decision chart shows the big key thresholds and remediation strategies by data type.",
@@ -164,7 +198,7 @@
       "caption": "过渡期立即落地大Key巡检和淘汰策略调整，在不改变架构的前提下快速降低风险。矩阵中的阈值可根据实际业务调整。"
     },
     {
-      "id": "chapter-06",
+      "id": "chapter-07",
       "title": "监控体系建设",
       "diagram_type": "layer",
       "layout_note": "A layer diagram shows the monitoring architecture from collection to alerting to dashboard display.",
@@ -186,7 +220,7 @@
       "caption": "监控从实例级细化为业务级：每个实例独立采集，告警按业务维度路由，看板支持总览和下钻，实现问题秒级定位。"
     },
     {
-      "id": "chapter-07",
+      "id": "chapter-08",
       "title": "安全加固与长期治理机制",
       "diagram_type": "flow",
       "layout_note": "A flow diagram shows the security hardening measures and the long-term governance workflow.",

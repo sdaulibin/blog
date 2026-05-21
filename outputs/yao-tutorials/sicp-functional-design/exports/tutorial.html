@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>策速 · 尽调分析平台 — 功能设计文档</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="/Users/binginx/.claude/skills/yao-tutorial-skill/templates/tutorial-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">策速 · 尽调分析平台 — 功能设计文档</h1>
+</header>
+<h1 id="策速-尽调分析平台-功能设计文档">策速 · 尽调分析平台 —
+功能设计文档</h1>
+<p>2026年5月21日</p>
+<hr />
+<h2 id="第1章-项目总览与架构定位">第1章 项目总览与架构定位</h2>
+<figure>
+<img src="assets/screenshots/chapter-01.png"
+alt="第1章：平台架构分层图" />
+<figcaption aria-hidden="true">第1章：平台架构分层图</figcaption>
+</figure>
+<h3 id="平台定位与业务背景">1.1 平台定位与业务背景</h3>
+<p>策速 ·
+尽调分析平台是一个面向银行信贷业务的智能尽调分析系统。它解决的核心问题是：银行在审批贷款时，需要审阅大量调查报告、审查意见、批复文件和信贷制度，这些文档格式不统一、数据分散、交叉核验工作量大，依赖人工逐字逐表比对，效率低且容易遗漏风险。</p>
+<p>平台的目标是将非结构化的信贷文档转化为可计算、可查询、可推理的结构化知识，辅助信贷审批人员识别风险。</p>
+<h3 id="技术栈全景">1.2 技术栈全景</h3>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 42%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr>
+<th>层次</th>
+<th>技术选型</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前端框架</td>
+<td>Streamlit</td>
+<td>Web UI、页面路由、会话状态管理</td>
+</tr>
+<tr>
+<td>LLM 接口</td>
+<td>DashScope OpenAI 兼容 API</td>
+<td>调用通义千问、DeepSeek、GLM、Kimi、MiniMax 等 18 个模型</td>
+</tr>
+<tr>
+<td>关系数据库</td>
+<td>SQLite</td>
+<td>文档元数据、结构化数据、分析结果、标签、制度规则（28 张表）</td>
+</tr>
+<tr>
+<td>本体引擎</td>
+<td>Owlready2 + RDFlib</td>
+<td>OWL 2.0 本体建模、SWRL 规则、HermiT/Pellet 推理机</td>
+</tr>
+<tr>
+<td>文档解析</td>
+<td>python-docx + pdfplumber</td>
+<td>Word 和 PDF 文档的结构化提取</td>
+</tr>
+<tr>
+<td>图谱可视化</td>
+<td>streamlit-agraph</td>
+<td>本体类/属性/关系的交互式图谱展示</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>Pandas + openpyxl</td>
+<td>数据清洗、Excel 导出</td>
+</tr>
+<tr>
+<td>并发控制</td>
+<td>ThreadPoolExecutor</td>
+<td>多模型并行 LLM 调用（最大 8 并发）</td>
+</tr>
+<tr>
+<td>HTTP 客户端</td>
+<td>OpenAI SDK + httpx</td>
+<td>LLM API 调用，自定义超时策略</td>
+</tr>
+</tbody>
+</table>
+<h3 id="模块总览">1.3 模块总览</h3>
+<p>平台包含 7 个核心功能模块：</p>
+<ol type="1">
+<li><strong>文件材料结构化</strong> — 文档上传、解析、结构化提取、LLM
+数据复核</li>
+<li><strong>财务指标加工</strong> — 基础指标查找 + 计算指标公式求值 +
+风险判断</li>
+<li><strong>调查报告与财务分析</strong> — 多模型并行 LLM 风险分析 +
+证据溯源</li>
+<li><strong>历史材料智能打标</strong> — 多维度标签体系 + 多模型打标 +
+复核工作流</li>
+<li><strong>制度规则拆解</strong> — 信贷制度文档条款级规则提取</li>
+<li><strong>信贷本体建模</strong> — OWL 本体管理 + SWRL 规则 + OWL 推理
++ 制度驱动知识扩展</li>
+<li><strong>模型配置</strong> — LLM API 密钥管理 + 18
+个模型的目录和参数管理</li>
+</ol>
+<h3 id="全局数据流">1.4 全局数据流</h3>
+<pre><code>原始文档 (.docx/.pdf)
+    │
+    ▼
+┌──────────────┐     ┌─────────────────┐
+│ 文件材料结构化 │────▶│ structured_items │ ← 财务指标、主业分析、打标的共同数据源
+│ (解析+提取)   │     │ structured_tables│
+└──────────────┘     └────────┬────────┘
+     │                        │
+     ▼                        ▼
+┌──────────────┐     ┌──────────────┐
+│ LLM 数据复核  │     │ 财务指标加工  │ ──▶ fin_indicator_values
+└──────────────┘     └──────┬───────┘
+                            │
+                            ▼
+                     ┌──────────────────┐
+                     │ 调查报告与财务分析 │ ──▶ biz_results
+                     │ (多模型 LLM)      │
+                     └──────────────────┘
+
+┌──────────────┐     ┌──────────────────┐
+│ 制度规则拆解  │────▶│ regulation_results│
+└──────┬───────┘     └────────┬─────────┘
+       │                      │
+       ▼                      ▼
+┌──────────────────────────────────┐
+│ 信贷本体建模 (OWL + SWRL + 推理)  │
+│ TBox: 类/属性/规则类型            │
+│ ABox: 政策实例/条款实例/规则实例   │
+└──────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="第2章-文件材料结构化">第2章 文件材料结构化</h2>
+<figure>
+<img src="assets/screenshots/chapter-02.png"
+alt="第2章：文档解析流程图" />
+<figcaption aria-hidden="true">第2章：文档解析流程图</figcaption>
+</figure>
+<h3 id="支持的文档类型与上传流程">2.1 支持的文档类型与上传流程</h3>
+<p>平台支持 4 类信贷文档，每类有独立的解析策略：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>类别标识</th>
+<th>中文名称</th>
+<th>典型内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>investigation_financial</code></td>
+<td>调查报告与财报</td>
+<td>12 章标准信用报告（业务信息、财务分析、担保情况等）</td>
+</tr>
+<tr>
+<td><code>review_opinion</code></td>
+<td>审查意见</td>
+<td>审查部门对调查报告的意见</td>
+</tr>
+<tr>
+<td><code>approval_reply</code></td>
+<td>批复</td>
+<td>上级机构对授信申请的批复文件</td>
+</tr>
+<tr>
+<td><code>credit_regulation</code></td>
+<td>信贷制度</td>
+<td>银行内部信贷管理制度文件</td>
+</tr>
+</tbody>
+</table>
+<p>上传流程： 1. 用户在 UI 上传 <code>.docx</code> 或 <code>.pdf</code>
+文件 2. 系统计算 SHA-256 哈希去重 3. 根据文件格式调用对应解析器 4.
+执行结构化数据提取，写入 <code>structured_items</code> 和
+<code>structured_tables</code> 表 5. 对 <code>.docx</code>
+文件生成书签副本（<code>bookmarked.docx</code>），用于后续溯源</p>
+<h3 id="解析引擎docx-与-pdf-双通道">2.2 解析引擎：docx 与 pdf
+双通道</h3>
+<p><strong>Word
+解析器</strong>（<code>src/parser/docx_parser.py</code>）：</p>
+<p>解析策略分三层： -
+<strong>标准模式</strong>（<code>standard</code>）：匹配 12
+章信用报告骨架（<code>SECTION_DEFS</code> 定义了 12
+个正则模式），至少命中 3 个不同章节号才触发 -
+<strong>大纲模式</strong>（<code>outline</code>）：通过 Word 样式的
+<code>w:outlineLvl</code> 和字体大小推断标题层级 -
+<strong>自由文本模式</strong>（<code>free_form</code>）：无法识别章节结构时，归为单个”全文”章节</p>
+<p>关键技术细节： - 直接遍历 <code>w:body</code> XML 元素，而非使用
+python-docx 的高层 API，以获取精确的全局行号索引 -
+处理”包装表格”模式：某些文档整个 body 是单列表格，真正的内容在嵌套表格中
+- 表格表头检测：基于单元格底色（深色背景或浅蓝色背景，排除灰色） -
+隐藏文本过滤：排除
+<code>w:vanish</code>、<code>w:webHidden</code>、修订删除（<code>w:del</code>、<code>w:moveFrom</code>）中的文本</p>
+<p><strong>PDF
+解析器</strong>（<code>src/parser/pdf_parser.py</code>）：</p>
+<ul>
+<li>使用 <code>pdfplumber</code> 提取文本、表格和字符级字体信息</li>
+<li>标题检测基于字体大小：字号 &gt;= 正文字号 × 1.15 且 &gt;= 正文字号 +
+2pt</li>
+<li>PDF 无 Word 书签，使用 <code>page:block</code> 坐标格式作为锚点</li>
+<li>输出结构与 docx 解析器完全一致，下游代码格式无关</li>
+</ul>
+<p><strong>信贷制度专用分章</strong>（<code>src/parser/credit_sectioning.py</code>）：</p>
+<p>针对 <code>credit_regulation</code> 类别文档的特殊处理： -
+区分”第一章 总则”（独立章节）和”附件：1. xxx”（列举项，不创建章节） -
+匹配 <code>第N章</code> 和 <code>附件N</code> 模式，排除
+<code>附件：N</code> 列举格式</p>
+<h3 id="结构化提取与归一化">2.3 结构化提取与归一化</h3>
+<p><strong>结构化提取器</strong>（<code>src/parser/struct_extractor.py</code>）：</p>
+<p>将解析后的章节内容转化为树状结构数据，写入数据库：</p>
+<pre><code>section_root (group)
+├── group_header &quot;（一）业务概况&quot;
+│   ├── key_value &quot;借款人：xxx公司&quot;
+│   ├── key_value &quot;申请金额：5000万元&quot;
+│   └── table → structured_tables
+├── zh_major_heading &quot;六、行业分析&quot;
+│   └── independent &quot;企业经营稳定...&quot;
+└── article_heading &quot;第十五条&quot;</code></pre>
+<p>表格分类算法（4 种类型）： 1.
+<strong>key_value_pairs</strong>：偶数列，标签-值交替排列 2.
+<strong>data_matrix</strong>：表头行 + 2 行以上数据（5
+列以上或含数值数据的宽表） 3. <strong>header_single_row</strong>：表头行
++ 恰好 1 行数据（按列提取 KV） 4.
+<strong>single_column_prose</strong>：单列文本</p>
+<p><strong>数值归一化器</strong>（<code>src/parser/normalizer.py</code>）：</p>
+<p>处理文档中各种数值表示： - 千分位分隔：<code>1,234.56</code> →
+<code>1234.56</code> - 括号负数：<code>(1,234.00)</code> →
+<code>-1234.0</code> - 百分比：<code>26.61%</code> →
+<code>0.2661</code>（存储为小数，便于计算） - 符号映射：<code>⊙</code> →
+selected，<code>○</code> → unselected，<code>√</code> →
+checked，<code>□</code> → unchecked - 空值检测：多层规则（字面空值
+<code>-</code>/<code>无</code>/<code>N/A</code>、仅含单位的壳
+<code>万元</code>、纯标点）</p>
+<h3 id="llm-数据复核与审计">2.4 LLM 数据复核与审计</h3>
+<p>对每个章节可触发 LLM 复核（<code>src/llm/reviewer.py</code>）：</p>
+<ol type="1">
+<li>将章节内容序列化为文本（段落 + 表格，含锚点 ID）</li>
+<li>调用 LLM
+检查：数值超出合理范围、逻辑矛盾、文字与数字不一致、疑似录入错误、必填项缺失</li>
+<li>生成复核任务（<code>review_tasks</code>
+表），每条含：原始值、建议值、LLM 判断、理由</li>
+<li>用户可执行：采纳（adopt）、修正（correct）、忽略（ignore）、回退（rollback）</li>
+<li>每次决策变更写入不可变审计日志（<code>review_audit_log</code>
+表）</li>
+</ol>
+<h3 id="后端技术栈">2.5 后端技术栈</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>组件</th>
+<th>技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Word 解析</td>
+<td>python-docx + XML 直接遍历</td>
+<td>全局段落/行索引，支持书签精确定位</td>
+</tr>
+<tr>
+<td>PDF 解析</td>
+<td>pdfplumber</td>
+<td>字体大小检测标题，表格提取</td>
+</tr>
+<tr>
+<td>数值处理</td>
+<td>自定义归一化引擎</td>
+<td>冻结 v1 规则，不做单位转换</td>
+</tr>
+<tr>
+<td>书签写入</td>
+<td>python-docx XML 操作</td>
+<td>在原文档副本中插入 <code>w:bookmarkStart/End</code></td>
+</tr>
+<tr>
+<td>HTML 渲染</td>
+<td>自定义 HTML 生成器</td>
+<td>内联 CSS/JS，锚点定位+高亮</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>SQLite (28 张表)</td>
+<td>60s 超时防锁，手动级联删除</td>
+</tr>
+<tr>
+<td>LLM 复核</td>
+<td>DashScope API</td>
+<td>单模型调用，返回结构化复核任务</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="第3章-财务指标加工">第3章 财务指标加工</h2>
+<figure>
+<img src="assets/screenshots/chapter-03.png"
+alt="第3章：财务指标计算管线" />
+<figcaption aria-hidden="true">第3章：财务指标计算管线</figcaption>
+</figure>
+<h3 id="两层指标配置体系">3.1 两层指标配置体系</h3>
+<p>平台定义了 234 项标准财务指标，分为两层：</p>
+<p><strong>基础指标</strong>（<code>fin_basic_indicator_configs</code>
+表）： - 从结构化表格中直接查找的数值 -
+配置项：匹配值（<code>match_value</code>）、父级标签、祖父级标签、报告期、精确/模糊匹配</p>
+<p><strong>计算指标</strong>（<code>fin_calc_indicator_configs</code>
+表）： - 通过公式从基础指标计算得出 -
+配置项：公式字符串、标准值、风险方向、可信度等级、计算模式</p>
+<p>四种计算模式： - <code>free</code>：无期数约束，单次求值 -
+<code>fixed</code>：固定报告期，变量绑定到指定期 -
+<code>all_five</code>：跨 5 个报告期分别求值 -
+<code>begin_end</code>：期初/期末配对求均值（3 组）</p>
+<p>五个报告期：本期、上年同期、上年末、上两年末、上三年末</p>
+<h3 id="基础指标查找引擎">3.2 基础指标查找引擎</h3>
+<p><strong><code>src/fin/lookup.py</code></strong>：</p>
+<p>查找算法： 1. 加载文档所有 <code>structured_items</code>，构建
+<code>id_map</code>（按 item_id）和 <code>path_map</code>（祖先链） 2.
+按优先级尝试多条查找规则 3. 每条规则：沿祖先链匹配 parent/grandparent →
+在表格中匹配行标签 → 在表头中匹配报告期列 → 返回对应单元格值</p>
+<p>支持精确匹配和模糊匹配（子串匹配），返回命中/未命中状态及完整追溯信息。</p>
+<h3 id="计算指标公式引擎">3.3 计算指标公式引擎</h3>
+<p><strong><code>src/fin/calculator.py</code></strong>（约 946
+行）：</p>
+<p><strong>AST 安全求值</strong>： - 通过 Python <code>ast</code>
+模块解析公式字符串为语法树 -
+白名单函数：<code>sqrt</code>、<code>pow</code>、<code>abs</code>、<code>min</code>、<code>max</code>、<code>round</code>、<code>log</code>、<code>exp</code>
+- 禁止访问 <code>__builtins__</code>、禁止函数调用、禁止属性访问 - 校验
+AST 节点类型，只允许数学运算和白名单函数</p>
+<p><strong>拓扑排序</strong>： -
+从公式中提取变量标识符（排除白名单函数名） -
+构建依赖图，执行拓扑排序解决指标间依赖 - 检测循环依赖并报错</p>
+<p><strong>执行流程</strong>： 1. 查找所有基础指标值 2.
+校验并拓扑排序计算指标 3. 按依赖顺序依次求值 4.
+每个指标记录：原始值、数值、公式、代入过程、风险判断、可信度 5. 写入
+<code>fin_indicator_values</code> 表</p>
+<h3 id="风险判断与可信度评级">3.4 风险判断与可信度评级</h3>
+<p><strong>风险判断</strong>（<code>_judge_risk</code>）： -
+将计算结果与标准值比较 - 支持 3
+种方向：<code>gt</code>（大于标准值为风险）、<code>lt</code>（小于标准值为风险）、<code>eq</code>（不等于为风险）
+- 返回 (level, reason) 元组</p>
+<p><strong>可信度评级</strong>： - 四个等级：极高（75-100
+分）、高（50-74）、中（25-49）、低（0-24） -
+每个计算指标配置可信度等级和评分 -
+校验评分是否落在等级对应的分数区间内</p>
+<h3 id="后端技术栈-1">3.5 后端技术栈</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>组件</th>
+<th>技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>公式求值</td>
+<td>Python ast 模块</td>
+<td>AST 解析 + 白名单校验 + 沙箱执行</td>
+</tr>
+<tr>
+<td>依赖解析</td>
+<td>自定义拓扑排序</td>
+<td>检测循环依赖，保证求值顺序</td>
+</tr>
+<tr>
+<td>数值查找</td>
+<td>自定义路径匹配引擎</td>
+<td>祖先链 + 行标签 + 列标题三维匹配</td>
+</tr>
+<tr>
+<td>配置管理</td>
+<td>SQLite (5 张表)</td>
+<td>基础/计算指标配置、分析运行记录、指标值</td>
+</tr>
+<tr>
+<td>种子数据</td>
+<td>脚本从 Word 参考文档导入</td>
+<td><code>scripts/seed_fin_configs_from_234.py</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="第4章-调查报告与财务分析">第4章 调查报告与财务分析</h2>
+<figure>
+<img src="assets/screenshots/chapter-04.png"
+alt="第4章：多模型并行分析架构" />
+<figcaption aria-hidden="true">第4章：多模型并行分析架构</figcaption>
+</figure>
+<h3 id="两种上下文构建模式">4.1 两种上下文构建模式</h3>
+<p><strong>结构化模式</strong>（默认，<code>build_biz_structured_context</code>）：</p>
+<ol type="1">
+<li><p>从数据库读取 <code>structured_items</code> 和
+<code>structured_tables</code>，过滤主营相关章节（第 1-7 章）</p></li>
+<li><p>构建 parent-child 树，遍历生成<strong>紧凑格式</strong>：</p>
+<pre><code>三、主营业务情况/主要产品：钢材贸易
+七、财务分析/资产负债表/R17：41294</code></pre></li>
+<li><p>同时构建
+<code>locator_index</code>（<code>定位路径 → Word 书签名</code>
+映射），用于后续证据溯源</p></li>
+<li><p>紧凑模式节省 token，每行一条数据，不含书签编号</p></li>
+</ol>
+<p><strong>原始文档模式</strong>（<code>build_biz_raw_doc_context</code>）：</p>
+<ol type="1">
+<li>找到原始 <code>.docx</code> 文件，用 <code>python-docx</code>
+直接读取所有段落和表格</li>
+<li>对支持 file-extract 的模型（如 qwen-long），上传文件到 DashScope
+云端，用 <code>fileid://</code> 协议让模型直接读取原文</li>
+<li>不做结构化处理，保留完整原文信息</li>
+</ol>
+<h3 id="多模型并行分析架构">4.2 多模型并行分析架构</h3>
+<p><strong><code>run_biz_analysis</code></strong>（<code>src/llm/biz_analyzer.py:782</code>）：</p>
+<pre><code>                    ┌─────────────────────┐
+                    │   准备上下文          │
+                    │   构建提示词          │
+                    └──────────┬──────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              ▼                ▼                ▼
+        ┌──────────┐    ┌──────────┐    ┌──────────┐
+        │ Model A  │    │ Model B  │    │ Model C  │
+        │ (线程1)   │    │ (线程2)   │    │ (线程3)   │
+        │          │    │          │    │          │
+        │ step1 →  │    │ step1 →  │    │ step1 →  │
+        │ step2 →  │    │ step2 →  │    │ step2 →  │
+        │ done     │    │ done     │    │ done     │
+        └──────────┘    └──────────┘    └──────────┘
+              │                │                │
+              └────────────────┼────────────────┘
+                               ▼
+                    写入 biz_results 表</code></pre>
+<p>关键设计： -
+<strong>链间并行、链内串行</strong>：不同模型在不同线程中并行运行，但同一模型内的步骤按顺序执行
+-
+<strong>并发控制</strong>：<code>ThreadPoolExecutor(max_workers=min(N, 8))</code>，加信号量防止
+API 限流 - <strong>停止机制</strong>：通过 <code>threading.Event</code>
+实现优雅停止（步骤间隙检查，当前 LLM 请求仍会跑完） -
+<strong>可选财务摘要</strong>：勾选”包含财务分析”时，从
+<code>fin_indicator_values</code> 读取已计算结果，附加到上下文末尾</p>
+<h3 id="提示词设计与检查逻辑">4.3 提示词设计与检查逻辑</h3>
+<p><code>config.yaml</code>
+中定义了一个单步骤提示词（<code>biz_analysis_prompts</code>），要求 LLM
+按固定结构输出 JSON 数组：</p>
+<table>
+<thead>
+<tr>
+<th>输出位置</th>
+<th>check_name</th>
+<th>类型</th>
+<th>risk_level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第 1 条</td>
+<td>分析总结：主营业务</td>
+<td>分析总结</td>
+<td>summary</td>
+</tr>
+<tr>
+<td>第 2 条</td>
+<td>分析总结：核心盈利逻辑与市场地位</td>
+<td>分析总结</td>
+<td>summary</td>
+</tr>
+<tr>
+<td>第 3+ 条</td>
+<td>必查一：资产结构核验</td>
+<td>必查</td>
+<td>high/medium/low/suspect</td>
+</tr>
+<tr>
+<td>第 3+ 条</td>
+<td>必查二：利润来源核验</td>
+<td>必查</td>
+<td>high/medium/low/suspect</td>
+</tr>
+<tr>
+<td>第 3+ 条</td>
+<td>必查三：购销品种核验</td>
+<td>必查</td>
+<td>high/medium/low/suspect</td>
+</tr>
+<tr>
+<td>第 3+ 条</td>
+<td>自由识别：&lt;自定义&gt;</td>
+<td>自由风险</td>
+<td>high/medium/low/suspect</td>
+</tr>
+</tbody>
+</table>
+<p>每条风险必须包含 <code>calc_trace</code>（计算过程）和
+<code>evidence</code>（证据溯源）。风险等级归一化为 6
+级：high、medium、low、no_risk、suspect、summary。</p>
+<h3 id="证据溯源机制">4.4 证据溯源机制</h3>
+<p>这是本模块的关键特色——将 LLM 输出的证据项定位回原始 Word
+文档的精确位置：</p>
+<pre><code>LLM 输出 evidence.item_label = &quot;七、财务分析/资产负债表/R17&quot;
+                          ↓
+locator_index 查找 → &quot;bm_00042&quot;
+                          ↓
+UI &quot;↗&quot; 按钮 → open_at_bookmark(&quot;bookmarked.docx&quot;, &quot;bm_00042&quot;)
+                          ↓
+VBScript 打开 Word 并跳转到该位置（Windows）</code></pre>
+<p>匹配策略（5 层回退）： 1. 精确匹配路径 2. 去掉末尾冒号 3. NFKC
+Unicode 标准化后匹配 4. 最长前缀匹配（LLM 可能多带了说明后缀） 5.
+数据库弱匹配（按字段名 + 值回查 <code>structured_items</code>）</p>
+<h3 id="后端技术栈-2">4.5 后端技术栈</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>组件</th>
+<th>技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LLM 调用</td>
+<td>OpenAI SDK → DashScope</td>
+<td>OpenAI 兼容接口，3 种思考模式分发</td>
+</tr>
+<tr>
+<td>并发执行</td>
+<td>ThreadPoolExecutor</td>
+<td>max 8 并发，链间并行链内串行</td>
+</tr>
+<tr>
+<td>JSON 解析</td>
+<td>多策略回退</td>
+<td>json.loads → raw_decode → 正则 [.*]</td>
+</tr>
+<tr>
+<td>证据溯源</td>
+<td>自定义定位索引</td>
+<td>紧凑路径 → 书签名映射 + 5 层回退匹配</td>
+</tr>
+<tr>
+<td>文件上传</td>
+<td>DashScope file-extract API</td>
+<td>部分模型支持云端直接读取原始文档</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>SQLite (3 张表)</td>
+<td>biz_tests、biz_results、biz_model_call_log</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="第5章-历史材料智能打标">第5章 历史材料智能打标</h2>
+<figure>
+<img src="assets/screenshots/chapter-05.png"
+alt="第5章：智能打标流程" />
+<figcaption aria-hidden="true">第5章：智能打标流程</figcaption>
+</figure>
+<h3 id="三层标签体系与配置">5.1 三层标签体系与配置</h3>
+<p><strong>三层架构</strong>： - <strong>L1
+定位层</strong>：行业分类（如”制造业”、“批发零售业”） - <strong>L2
+风险层</strong>：风险特征（如”关联交易集中”、“经营周期性”） - <strong>L3
+事件层</strong>：具体事件（如”诉讼”、“股权变更”）</p>
+<p><strong>三种标签类型</strong>： -
+<code>multi_value</code>：多值标签，带候选值池（如行业分类可有多个值） -
+<code>grade</code>：等级标签（如风险等级 A/B/C/D） -
+<code>binary</code>：二元标签（是/否）</p>
+<p>每个标签配置包含：判断标准、LLM 提示词模板、候选值、最大候选数。</p>
+<h3 id="多模型并行打标流程">5.2 多模型并行打标流程</h3>
+<p><strong><code>src/llm/industry_tagger.py</code></strong>：</p>
+<ol type="1">
+<li>创建打标会话（<code>tag_sessions</code>
+表），快照当前配置和候选值</li>
+<li>构建上下文：从调查报告 + 关联的审查意见 +
+批复中提取结构化数据，按文档类别前缀区分来源</li>
+<li>为每个模型构建用户提示词（标签定义 + 候选值 + 材料上下文）</li>
+<li>并行调用多个模型，每个模型为每个标签返回结果</li>
+<li>计算置信度评分（基于证据数量、是否有书签溯源、标签层级）</li>
+<li>结果写入 <code>industry_tag_results</code> 表</li>
+</ol>
+<h3 id="复核工作流与置信度评分">5.3 复核工作流与置信度评分</h3>
+<p><strong>置信度计算</strong>（<code>calculate_confidence</code>）：</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>confidence <span class="op">=</span> 基础分(证据数量) <span class="op">+</span> 书签加分(has_source_bms) <span class="op">+</span> 层级调节(category)</span></code></pre></div>
+<p><strong>复核流程</strong>： 1. 浏览会话列表，按状态/复核状态过滤 2.
+进入会话详情：按 L1/L2/L3 分组显示标签 3.
+每个标签展示多模型对比卡片：共识（多模型一致）和分歧 4.
+对每条结果执行：确认（confirm）、丢弃（discard，带理由）、重置（reset）
+5. 确认的多值标签自动加入候选值池 6. 可标记会话为”已完成复核”</p>
+<h3 id="查询与统计视图">5.4 查询与统计视图</h3>
+<p>四种查询方式： - <strong>标签云</strong>：按频率缩放字号，按类别着色
+- <strong>组合查询</strong>：多标签 AND 匹配，按命中数排序 -
+<strong>按文档查看</strong>：单个文档的 L1/L2/L3 标签及多模型结果 -
+<strong>统计分析</strong>：标签计数、类别分布柱状图、模型输出分布、置信度分布</p>
+<h3 id="后端技术栈-3">5.5 后端技术栈</h3>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>上下文构建</td>
+<td>复用 biz_analyzer 的结构化上下文</td>
+<td>多文档类型联合输入</td>
+</tr>
+<tr>
+<td>多模型并行</td>
+<td>ThreadPoolExecutor</td>
+<td>同 biz_analyzer 模式</td>
+</tr>
+<tr>
+<td>置信度评分</td>
+<td>自定义评分函数</td>
+<td>证据数量 + 书签 + 层级三因子</td>
+</tr>
+<tr>
+<td>会话快照</td>
+<td>SQLite (7 张表)</td>
+<td>配置和候选值快照，保证分析可追溯</td>
+</tr>
+<tr>
+<td>复核工作流</td>
+<td>数据库状态机</td>
+<td>pending → confirmed/discarded，带审计</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="第6章-制度规则拆解">第6章 制度规则拆解</h2>
+<figure>
+<img src="assets/screenshots/chapter-06.png"
+alt="第6章：制度规则提取流程" />
+<figcaption aria-hidden="true">第6章：制度规则提取流程</figcaption>
+</figure>
+<h3 id="制度文档解析与粒度控制">6.1 制度文档解析与粒度控制</h3>
+<p>制度文档（<code>credit_regulation</code>
+类别）经过文件材料结构化模块解析后，按 3 种粒度送入规则提取引擎：</p>
+<ul>
+<li><strong>整篇模式</strong>（<code>whole</code>）：整个文档作为一次输入</li>
+<li><strong>按章模式</strong>（<code>by_chapter</code>）：按”第N章”切分，每个章节独立分析</li>
+<li><strong>按条模式</strong>（<code>by_article</code>）：按”第N条”切分，粒度最细</li>
+</ul>
+<p>切分逻辑（<code>split_by_chapter</code> /
+<code>split_by_article</code>）： - 从解析后的 section 中提取文本 -
+标题分类：<code>chapter</code>（第N章）、<code>article</code>（第N条）、<code>subitem</code>（（一）/（二））
+- 按分类结果将文本分段</p>
+<h3 id="规则提取引擎">6.2 规则提取引擎</h3>
+<p><strong><code>src/llm/regulation_analyzer.py</code></strong>（约 637
+行）：</p>
+<p><strong>提示词设计</strong>（<code>prompts/regulation_system_prompt.txt</code>）：</p>
+<p>要求 LLM 对每个条款输出： -
+<code>result_type</code>：<code>rule</code>（控制性规则）或
+<code>explanation</code>（说明性内容） -
+<code>rule_expressible</code>：该规则能否形式化为数值/等式条件（yes/no）
+- <code>control_hardness</code>：<code>hard</code>（硬约束，必须遵守）或
+<code>soft</code>（软约束，建议性） -
+<code>action_type</code>：<code>reject</code>（拒绝类）或
+<code>assign</code>（指派类） -
+<code>trigger_expression</code>：触发条件的半形式化表达 -
+<code>involved_objects</code>：涉及的基础对象</p>
+<p><strong>执行流程</strong>： 1. 创建分析会话，快照基础对象和提示词 2.
+按选择的粒度切分文档 3. 多模型并行分析，每个模型内部按段并行（最多 8
+段并发） 4. 结果入库：每条规则写入
+<code>regulation_analysis_results</code> 表 5. LLM 发现的新基础对象写入
+<code>regulation_pending_objects</code> 待确认队列</p>
+<p><strong>结果摄入</strong>（<code>_ingest_results</code>）： -
+为每条结果生成 UUID -
+解析涉及对象：已存在的基础对象直接关联，新发现的进入待确认队列 - 归一化
+result_type 和 action_type</p>
+<h3 id="基础对象管理">6.3 基础对象管理</h3>
+<p>基础对象是规则中引用的数据变量（如”借款人年龄”、“授信额度”、“贷款余额”）：</p>
+<ul>
+<li>手动
+CRUD：名称、数据类型（integer/decimal/string/boolean）、单位、描述</li>
+<li>LLM 发现队列：<code>regulation_pending_objects</code>
+表，支持逐条确认/拒绝和批量操作</li>
+<li>对象快照：每次分析会话快照最多 500 个基础对象，作为 LLM 上下文</li>
+</ul>
+<h3 id="后端技术栈-4">6.4 后端技术栈</h3>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档切分</td>
+<td>自定义正则分段器</td>
+<td>章/条/款三级切分</td>
+</tr>
+<tr>
+<td>规则提取</td>
+<td>DashScope API</td>
+<td>多模型 × 多段并行</td>
+</tr>
+<tr>
+<td>对象管理</td>
+<td>SQLite (4 张表)</td>
+<td>基础对象、待确认对象、会话、结果</td>
+</tr>
+<tr>
+<td>提示词管理</td>
+<td>文件系统</td>
+<td><code>prompts/regulation_system_prompt.txt</code></td>
+</tr>
+<tr>
+<td>导出</td>
+<td>Pandas + openpyxl</td>
+<td>Excel/CSV 多维过滤导出</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="第7章-信贷本体建模">第7章 信贷本体建模</h2>
+<figure>
+<img src="assets/screenshots/chapter-07.png"
+alt="第7章：本体知识图谱架构" />
+<figcaption aria-hidden="true">第7章：本体知识图谱架构</figcaption>
+</figure>
+<h3 id="本体论在信贷领域的应用动机">7.1 本体论在信贷领域的应用动机</h3>
+<p>传统信贷分析系统的核心矛盾：LLM 的分析结果是一次性
+JSON，无法形成知识积累。</p>
+<p>引入本体引擎解决 4 个问题：</p>
+<p><strong>概念标准化</strong>：不同制度文件对同一概念用不同术语（“借款人”vs”申请人”vs”授信客户”），本体通过类层次统一。</p>
+<p><strong>关系建模</strong>：JSON
+只有扁平字段，本体通过对象属性显式表达”借款人 → hasLoan →
+贷款产品”等语义关系。</p>
+<p><strong>规则形式化</strong>：自然语言规则（“固定资产贷款超1亿须报总行”）无法自动执行，SWRL
+规则可实现形式化推理。</p>
+<p><strong>知识积累</strong>：每解析一个新制度，本体自动扩展，形成可复用的信贷知识图谱。</p>
+<h3 id="owl-本体存储与-crud">7.2 OWL 本体存储与 CRUD</h3>
+<p><strong>存储架构</strong>：</p>
+<p>每个本体是一个独立的 SQLite 文件（通过 Owlready2 的
+<code>World</code> 对象管理）：</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>world <span class="op">=</span> World(filename<span class="op">=</span><span class="st">&quot;data/ontologies/xxx.sqlite&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>onto <span class="op">=</span> world.get_ontology(<span class="st">&quot;http://qingdao.credit/ontology&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>world.save()   <span class="co"># 持久化到 SQLite quadstore</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>world.close()</span></code></pre></div>
+<p><strong>实体管理</strong>（<code>src/ontology/owl_store.py</code>，约
+711 行）：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>实现方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新建类</td>
+<td><code>types.new_class(name, (parent,))</code>，根类挂
+<code>owl:Thing</code></td>
+</tr>
+<tr>
+<td>重命名类</td>
+<td>直接赋值 <code>cls.name = new_name</code></td>
+</tr>
+<tr>
+<td>删除类</td>
+<td><code>destroy_entity(cls)</code></td>
+</tr>
+<tr>
+<td>修改继承</td>
+<td>操作 <code>cls.is_a</code> 列表，防环检查</td>
+</tr>
+<tr>
+<td>对象属性</td>
+<td>创建 <code>ObjectProperty</code> 子类，设 <code>domain</code> 和
+<code>range</code></td>
+</tr>
+<tr>
+<td>数据属性</td>
+<td>创建 <code>DataProperty</code> 子类，设 <code>domain</code> 和 XSD
+类型</td>
+</tr>
+<tr>
+<td>中文标签</td>
+<td><code>locstr(label, lang="zh")</code> 写入
+<code>entity.label</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>多文档导入处理</strong>：</p>
+<p>一个 OWL 文件可能 import
+多个本体。<code>_pick_primary_ontology</code>
+按实体数量选取主本体，避免元数据 IRI 修改后落入空壳。</p>
+<p><strong>网络导入控制</strong>：</p>
+<p>通过 monkey-patch <code>Ontology.load</code> 方法，可选禁止 Owlready2
+发起 HTTP 请求下载 <code>owl:imports</code> 依赖，避免导入外部 OWL
+文件时触发网络访问。</p>
+<h3 id="swrl-规则编译与推理">7.3 SWRL 规则编译与推理</h3>
+<p><strong>规则编译器</strong>（<code>src/ontology/swrl_builder.py</code>，约
+358 行）：</p>
+<p>将 UI 中构建的布尔规则树转换为标准 SWRL 规则字符串：</p>
+<pre><code>输入（规则树）：
+AND(
+  ATOM: ?p is Person
+  ATOM: ?p.hasAge &gt; 80
+  OR(
+    ATOM: ?p.hasLoan -&gt; ?l
+    ATOM: ?p.hasCredit &gt; 10000000
+  )
+)
+                          ↓ DNF 分解
+输出（2 条 SWRL 规则）：
+Person(?p) ∧ hasAge(?p, ?a) ∧ greaterThan(?a, 80) ∧ hasLoan(?p, ?l) → ...
+Person(?p) ∧ hasAge(?p, ?a) ∧ greaterThan(?a, 80) ∧ hasCredit(?p, ?c) ∧ greaterThan(?c, 10000000) → ...</code></pre>
+<p>关键算法： - <strong>DNF 分解</strong>：OR-of-ANDs →
+析取范式，每个合取子句生成一条独立规则 - <strong>NOT 处理</strong>： -
+数值比较：运算符翻转（<code>&gt;</code> → <code>&lt;=</code>） -
+类成员否定：创建 <code>owl:complementOf</code>
+补类（<code>Not_X = owl:complementOf(X)</code>） -
+<strong>跨类变量绑定</strong>：通过 ObjectProperty 桥接（如
+<code>?p.hasLoan → ?l</code>） - <strong>SWRL
+内建映射</strong>：<code>greaterThan</code>、<code>lessThanOrEqual</code>、<code>contains</code>
+等</p>
+<p><strong>OWL
+推理机</strong>（<code>ontology_reasoning_verify.py</code>）：</p>
+<p>通过 Owlready2 调用 Java 推理机： -
+HermiT：<code>sync_reasoner()</code> 或
+<code>sync_reasoner_hermit()</code> -
+Pellet：<code>sync_reasoner_pellet()</code>，支持数据属性推理 -
+推理后对比类层次变化和实例类型推断 - 检测不一致类</p>
+<h3 id="制度驱动本体完善tbox">7.4 制度驱动本体完善（TBox）</h3>
+<p><strong><code>src/ontology/policy_refinement_apply.py</code></strong>：</p>
+<p>TBox 层操作——扩展本体的模式/结构：</p>
+<ol type="1">
+<li>输入：制度文档的结构化数据 + 当前本体快照</li>
+<li>LLM 分析后建议新增：类、对象属性、数据属性、规则类型</li>
+<li><strong>校验阶段</strong>（<code>validate_refinement_plan</code>）：
+<ul>
+<li>名称合法性检查</li>
+<li>重名检测</li>
+<li>父类/domain/range 存在性检查</li>
+<li>XSD 类型白名单校验</li>
+</ul></li>
+<li><strong>执行阶段</strong>（<code>apply_refinement_plan</code>）：
+<ul>
+<li>批量创建新类（含中文标签和注释）</li>
+<li>创建对象属性（domain + range）</li>
+<li>创建数据属性（domain + XSD 类型）</li>
+<li>创建规则类型类</li>
+</ul></li>
+</ol>
+<h3 id="制度实例化abox">7.5 制度实例化（ABox）</h3>
+<p><strong><code>src/ontology/policy_instance_store.py</code></strong>：</p>
+<p>ABox 层操作——在本体中创建具体实例：</p>
+<ol type="1">
+<li>输入：LLM
+将制度条款解析为政策实例、条款实例、规则实例、定性判断项</li>
+<li>调用 <code>cls(instance_id)</code> 创建 Individual（个体）</li>
+<li>通过 <code>setattr(individual, property, [other_individual])</code>
+建立实例间的关系链接</li>
+<li>为每个实例设置中文标签（<code>locstr</code>）</li>
+<li>记录未解析的链接错误</li>
+</ol>
+<p>完整流程：</p>
+<pre><code>制度文档结构化数据 → LLM 按条款解析 → JSON 输出
+    → policy_instances (政策实例)
+    → clause_instances (条款实例)
+    → rule_instances (规则实例)
+    → qualitative_judgment_items (定性判断项)
+    → links (实例间关系)
+    → apply_policy_instantiation_result() → 写入本体 quadstore</code></pre>
+<h3 id="后端技术栈-5">7.6 后端技术栈</h3>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>技术</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>本体存储</td>
+<td>Owlready2 SQLite quadstore</td>
+<td>每个本体独立 .sqlite 文件</td>
+</tr>
+<tr>
+<td>类/属性管理</td>
+<td>Owlready2 API</td>
+<td>Thing、ObjectProperty、DataProperty</td>
+</tr>
+<tr>
+<td>规则引擎</td>
+<td>自定义 SWRL 编译器</td>
+<td>DNF 分解 + NOT → complementOf</td>
+</tr>
+<tr>
+<td>OWL 推理</td>
+<td>HermiT / Pellet (Java)</td>
+<td>通过 Owlready2 桥接</td>
+</tr>
+<tr>
+<td>本体导入</td>
+<td>Owlready2 + RDFlib</td>
+<td>支持 RDF/XML、N-Triples、N-Quads</td>
+</tr>
+<tr>
+<td>图谱可视化</td>
+<td>streamlit-agraph</td>
+<td>层次布局 + 力导向布局</td>
+</tr>
+<tr>
+<td>TBox 扩展</td>
+<td>LLM + 校验 + 批量写入</td>
+<td>制度驱动本体模式完善</td>
+</tr>
+<tr>
+<td>ABox 实例化</td>
+<td>LLM + Owlready2 Individual</td>
+<td>制度条款生成具体实例</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="第8章-跨模块协同与技术架构总结">第8章
+跨模块协同与技术架构总结</h2>
+<figure>
+<img src="assets/screenshots/chapter-08.png"
+alt="第8章：全局技术架构" />
+<figcaption aria-hidden="true">第8章：全局技术架构</figcaption>
+</figure>
+<h3 id="全局数据流-1">8.1 全局数据流</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────────┐
+│                        用户界面 (Streamlit)                        │
+│  侧边栏导航 → 7 大模块 → 20 个子页面 → 表单/按钮/图谱/表格          │
+└──────────────────────────────┬───────────────────────────────────┘
+                               │
+┌──────────────────────────────▼───────────────────────────────────┐
+│                      业务逻辑层                                    │
+│  biz_analyzer │ calculator │ industry_tagger │ regulation_analyzer │
+│  reviewer     │ owl_store  │ swrl_builder    │ policy_*            │
+└───────┬──────────────┬──────────────┬──────────────┬──────────────┘
+        │              │              │              │
+        ▼              ▼              ▼              ▼
+┌──────────────┐ ┌──────────┐ ┌──────────────┐ ┌──────────────┐
+│   SQLite     │ │ DashScope │ │ Owlready2    │ │ 文件系统      │
+│  28 张表      │ │ LLM API   │ │ quadstore    │ │ 文档/提示词   │
+│  biz/fin/tag │ │ 18 模型   │ │ .sqlite/本体 │ │ config.yaml  │
+│  reg/ontology│ │           │ │              │ │ prompts/*    │
+└──────────────┘ └──────────┘ └──────────────┘ └──────────────┘</code></pre>
+<h3 id="llm-调用统一层">8.2 LLM 调用统一层</h3>
+<p>所有 LLM
+调用通过统一适配层（<code>src/llm/dashscope_compat.py</code>）：</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dashscope_chat_create(client, cfg, model_id, messages, temperature)</span></code></pre></div>
+<p>三种思考模式分发： - <code>off</code>：标准 chat
+completion，不附加额外参数 - <code>nonstream_no_thinking</code>：添加
+<code>extra_body={"enable_thinking": False}</code>，显式关闭推理 -
+<code>thinking_stream</code>：流式响应，聚合 reasoning_content 和
+content 片段</p>
+<p>HTTP 超时策略（<code>src/llm/httpx_timeout.py</code>）： -
+连接超时：90s - 读取超时：360s（按”chunk 间隔”语义，适合长输出） -
+全局超时：600s</p>
+<p>JSON 解析容错（<code>_parse_results</code>）： 1. 去 BOM + 去
+markdown 围栏 2. <code>json.loads</code> 直接解析 3.
+<code>raw_decode</code> 从首个 <code>[</code> 开始 4. 正则
+<code>\[.*\]</code> 兜底</p>
+<h3 id="数据库架构">8.3 数据库架构</h3>
+<p>SQLite 单文件数据库，28 张表按业务域分组：</p>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 27%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>业务域</th>
+<th>表</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档管理</td>
+<td>documents, document_relations</td>
+<td>文档元数据、文档关联</td>
+</tr>
+<tr>
+<td>结构化数据</td>
+<td>structured_items, structured_tables</td>
+<td>字段树、表格数据</td>
+</tr>
+<tr>
+<td>数据复核</td>
+<td>section_review_status, review_tasks, review_audit_log</td>
+<td>复核状态、任务、审计日志</td>
+</tr>
+<tr>
+<td>主营分析</td>
+<td>biz_tests, biz_results, biz_model_call_log</td>
+<td>分析会话、风险结果、调用计时</td>
+</tr>
+<tr>
+<td>财务指标</td>
+<td>fin_basic_indicator_configs, fin_calc_indicator_configs,
+fin_analysis_runs, fin_indicator_values</td>
+<td>配置、运行、值</td>
+</tr>
+<tr>
+<td>智能打标</td>
+<td>industry_tag_configs, tag_sessions, industry_tag_results,
+tag_session_docs, tag_candidate_values, tag_session_model_logs</td>
+<td>配置、会话、结果、候选值</td>
+</tr>
+<tr>
+<td>制度规则</td>
+<td>regulation_base_objects, regulation_analysis_sessions,
+regulation_analysis_results, regulation_pending_objects,
+regulation_session_model_logs</td>
+<td>对象、会话、结果、待确认</td>
+</tr>
+<tr>
+<td>本体管理</td>
+<td>ontology_files, policy_refinement_tasks,
+policy_instantiation_tasks</td>
+<td>文件记录、任务</td>
+</tr>
+</tbody>
+</table>
+<h3 id="设计决策与权衡">8.4 设计决策与权衡</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>决策</th>
+<th>选型</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据库</td>
+<td>SQLite</td>
+<td>MVP 阶段无需分布式数据库，单文件部署简单，60s 超时缓解并发锁</td>
+</tr>
+<tr>
+<td>本体引擎</td>
+<td>Owlready2</td>
+<td>Python 原生 OWL 2.0 库，自带 SQLite quadstore，支持 SWRL
+和推理机</td>
+</tr>
+<tr>
+<td>LLM 接口</td>
+<td>DashScope OpenAI 兼容</td>
+<td>统一接口调用 18 个国产模型，避免为每个模型写适配器</td>
+</tr>
+<tr>
+<td>公式求值</td>
+<td>AST 白名单</td>
+<td>比 <code>eval()</code> 安全，比 sympy 轻量，满足四则运算需求</td>
+</tr>
+<tr>
+<td>并发模型</td>
+<td>ThreadPoolExecutor</td>
+<td>I/O 密集型（等 LLM 响应），线程池足够，无需 asyncio</td>
+</tr>
+<tr>
+<td>规则编译</td>
+<td>DNF 分解</td>
+<td>SWRL 不支持 OR，必须将 OR 展开为多条独立规则</td>
+</tr>
+<tr>
+<td>紧凑上下文</td>
+<td>定位路径格式</td>
+<td>省略书签和结构标签，大幅减少 token 消耗</td>
+</tr>
+<tr>
+<td>两阶段重命名</td>
+<td>本体 IRI 翻译</td>
+<td>先生成全部建议，再按依赖序执行，避免中间态命名冲突</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>Owlready2 官方文档：https://owlready2.readthedocs.io/</li>
+<li>Streamlit 官方文档：https://docs.streamlit.io/</li>
+<li>DashScope API 文档：https://help.aliyun.com/product/610100.html</li>
+<li>项目设计说明书（内部文档）</li>
+</ul>
+</body>
+</html>

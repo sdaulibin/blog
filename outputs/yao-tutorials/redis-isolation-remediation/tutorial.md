@@ -274,9 +274,236 @@ sentinel parallel-syncs pension-master 1
 
 ---
 
-## 第4章 分阶段迁移实施方案
+## 第4章 Redis 应用开发规范
 
-### 4.1 阶段一：现状评估与基线采集（1-2周）
+架构整改解决的是基础设施层面的隔离问题，但Redis的稳定性同样依赖于应用层的正确使用。生产环境中多数故障——大Key阻塞、连接泄漏、慢查询——根源在代码层面。本章梳理应用开发中必须遵循的Redis使用规范，作为开发团队的编码约束。
+
+### 4.1 Key 设计规范
+
+**命名规则**：`{业务}:{模块}:{实体}:{ID}`
+
+```
+# 正确示例
+fund:quote:nav:000001          # 公募基金-行情-净值-基金代码
+metal:price:gold:AU99.99       # 贵金属-价格-黄金-品种
+sales:order:status:20240315001 # 理财代销-订单-状态-订单号
+trust:account:balance:12345    # 财富信托-账户-余额-账户号
+pension:plan:yield:PLAN001     # 商业养老-方案-收益率-方案号
+
+# 错误示例
+user_data                     # 无业务前缀，无法识别归属
+cache:temp:abc                 # 模糊命名，难以定位用途
+fund_quote_nav_000001          # 使用下划线分隔（应使用冒号）
+```
+
+为什么使用冒号分隔？Redis的Key以冒号作为层级分隔符，在`SCAN`命令和监控工具中可以按前缀过滤和统计。Spring Data Redis等框架也以冒号作为默认的分隔符。
+
+**Key长度控制**：单个Key不超过200字节。过长的Key会增加内存占用和网络传输开销。业务ID较长时，考虑使用哈希摘要。
+
+**禁止动态拼接无限Key空间**：
+
+```java
+// 错误：按时间戳生成无限Key，导致内存持续增长
+String key = "fund:tick:" + System.currentTimeMillis();
+redis.set(key, data);
+
+// 正确：固定Key + 定期覆盖
+String key = "fund:tick:latest:" + fundCode;
+redis.setex(key, 300, data);  // 5分钟过期
+```
+
+### 4.2 序列化与数据格式选择
+
+不同序列化方式对内存和性能的影响差异显著：
+
+| 序列化方式 | 空间效率 | 序列化速度 | 反序列化速度 | 可读性 | 推荐场景 |
+|-----------|---------|-----------|-----------|-------|---------|
+| JSON | 低 | 中 | 中 | 好 | 需要跨语言、人工可读 |
+| Protobuf | 高 | 快 | 快 | 差 | 高频读写、跨语言 |
+| Kryo | 高 | 快 | 快 | 差 | Java单一语言环境 |
+| JDK序列化 | 最低 | 慢 | 慢 | 差 | **不推荐** |
+| 纯字符串 | 最高 | 最快 | 最快 | 好 | 简单值（计数器、标志位） |
+
+**强制要求**：
+
+- 禁止使用Java原生序列化（JDK Serialization）。它产生的字节数组体积大（通常为JSON的2-3倍），且存在反序列化安全风险
+- 缓存对象建议使用JSON或Protobuf。JSON便于调试和跨语言协作；Protobuf适用于高频读写且对内存敏感的场景
+- 存储纯数值（计数器、标志位、时间戳）时，直接使用字符串，不要包装为对象
+
+```java
+// 错误：将整个对象存为Value
+UserSession session = new UserSession(userId, name, token, loginTime);
+redis.set("session:" + userId, serialize(session));  // JDK序列化后可能 2KB+
+
+// 正确：使用Hash存储对象字段
+Map<String, String> fields = new HashMap<>();
+fields.put("name", name);
+fields.put("token", token);
+fields.put("loginTime", String.valueOf(loginTime));
+redis.hmset("session:" + userId, fields);  // 紧凑、可部分读取
+```
+
+### 4.3 大Key预防与数据结构选型
+
+大Key是Redis生产故障的首要原因。在开发阶段就必须预防：
+
+| 场景       | 推荐数据结构               | 禁止使用         | 原因               |
+| -------- | -------------------- | ------------ | ---------------- |
+| 对象属性存储   | Hash（field < 1000）   | String存整个对象  | 部分读写，内存更紧凑       |
+| 计数器      | String + INCR        | Hash         | 原子递增，O(1)        |
+| 排行榜      | ZSet（member < 5000）  | List         | 天然排序，范围查询O(logN) |
+| 去重集合     | Set（member < 5000）   | List         | O(1)去重检查         |
+| 时间线/消息列表 | List（element < 5000） | ZSet         | LPUSH + LRANGE高效 |
+| 配置字典     | Hash                 | 多个String     | 集中管理，减少Key数量     |
+| 带权重的标签   | ZSet                 | Set + 外部权重映射 | 一次查询获取排序结果       |
+
+**大Key预防阈值**（代码审查检查项）：
+
+| 数据类型 | 预警阈值 | 禁止阈值 |
+|---------|---------|---------|
+| String | > 10 KB | > 100 KB |
+| Hash field 数量 | > 1,000 | > 5,000 |
+| List element 数量 | > 1,000 | > 5,000 |
+| Set member 数量 | > 1,000 | > 5,000 |
+| ZSet member 数量 | > 1,000 | > 5,000 |
+
+**集合类型的拆分策略**：当一个集合元素超过阈值时，必须拆分。
+
+```java
+// 错误：将所有基金的实时行情存入一个Hash
+// fund:quote:all → {000001: "...", 000002: "...", ... 5000个基金}
+// 内存占用可能超过 1MB
+redis.hmset("fund:quote:all", allQuotesMap);
+
+// 正确：按分桶存储，每个桶100个基金
+// fund:quote:bucket:00 → {000001~000100}
+// fund:quote:bucket:01 → {000101~000200}
+int bucket = fundCode.hashCode() % 50;
+redis.hmset("fund:quote:bucket:" + bucket, bucketMap);
+redis.expire("fund:quote:bucket:" + bucket, 300);  // 5分钟过期
+```
+
+### 4.4 命令使用规范
+
+**禁止使用的命令**（生产环境）：
+
+| 命令                     | 危险原因                  | 替代方案                   |
+| ---------------------- | --------------------- | ---------------------- |
+| `KEYS *`               | 遍历所有Key，O(N)阻塞主线程     | `SCAN` 渐进遍历            |
+| `FLUSHALL` / `FLUSHDB` | 清空数据，不可恢复             | 运维审批后执行                |
+| `HGETALL`（大Hash）       | 一次返回所有field，可能返回MB级数据 | `HSCAN` 或按需 `HMGET`    |
+| `LRANGE 0 -1`（大List）   | 返回全部元素                | 分页 `LRANGE start stop` |
+| `SMEMBERS`（大Set）       | 返回全部成员                | `SSCAN` 渐进遍历           |
+| `SORT`                 | 对大集合排序，O(N*logN)      | 应用层排序或使用ZSet           |
+
+**必须使用Pipeline/批量操作**的场景：
+
+```java
+// 错误：循环单次操作，每次都是一次网络往返
+for (String fundCode : fundCodes) {
+    String nav = redis.get("fund:quote:nav:" + fundCode);
+    results.add(nav);
+}
+// 100个基金 = 100次网络往返，耗时约 100×1ms = 100ms
+
+// 正确：使用Pipeline，一次网络往返
+Pipeline pipeline = redis.pipelined();
+for (String fundCode : fundCodes) {
+    pipeline.get("fund:quote:nav:" + fundCode);
+}
+List<Object> results = pipeline.syncAndReturnAll();
+// 100个基金 = 1次网络往返，耗时约 2-5ms
+```
+
+**批量操作优先**：
+
+| 批量命令 | 适用场景 | 注意事项 |
+|---------|---------|---------|
+| `MGET` / `MSET` | 批量读取/写入String | 单次不超过500个Key |
+| `HMGET` / `HMSET` | 批量读取/写入Hash字段 | field数量不超过100 |
+| `Pipeline` | 混合命令批量执行 | 单次Pipeline不超过500条命令 |
+| `Pipelined + MULTI` | 需要原子性的批量操作 | 控制事务中的命令数量 |
+
+### 4.5 连接池配置规范
+
+合理的连接池配置直接关系到应用的稳定性和Redis实例的健康。
+
+```yaml
+# Spring Boot 连接池配置参考（Lettuce）
+spring:
+  redis:
+    sentinel:
+      master: fund-master
+      nodes: 10.0.1.10:26379,10.0.1.11:26379,10.0.1.12:26379
+    lettuce:
+      pool:
+        max-active: 20    # 最大连接数 = 预估并发线程数 × 1.2
+        max-idle: 10      # 最大空闲连接 = max-active × 0.5
+        min-idle: 5       # 最小空闲连接，避免冷启动延迟
+        max-wait: 3000ms  # 获取连接超时时间
+      shutdown-timeout: 5000ms
+    timeout: 3000ms       # 命令超时时间
+```
+
+**配置原则**：
+
+- `max-active` 不超过Redis实例`maxclients`的 1/业务应用实例数。例如5个应用实例连接同一个Redis（maxclients=500），每个实例的max-active不超过100
+- `max-wait` 必须设置，避免连接池耗尽时线程无限等待
+- `timeout` 建议设置为 2-5 秒，避免慢命令长时间阻塞线程
+- 使用Sentinel模式时，必须配置Sentinel连接池参数（与数据连接池分开）
+
+### 4.6 容错与降级策略
+
+Redis作为缓存层，应用必须具备Redis不可用时的降级能力。
+
+```java
+// 正确的缓存降级模式
+public String getFundNav(String fundCode) {
+    String cacheKey = "fund:quote:nav:" + fundCode;
+    try {
+        String cached = redis.get(cacheKey);
+        if (cached != null) {
+            return cached;
+        }
+    } catch (RedisException e) {
+        // 记录告警日志，不抛出异常
+        log.warn("Redis读取失败，降级为数据库查询: {}", e.getMessage());
+        monitor.increment("redis.fallback");
+    }
+    
+    // 降级：从数据库或其他数据源获取
+    String nav = database.queryFundNav(fundCode);
+    
+    // 异步回写缓存（Redis恢复后自动补齐）
+    try {
+        redis.setex(cacheKey, 300, nav);
+    } catch (RedisException e) {
+        log.warn("Redis回写失败，跳过缓存: {}", e.getMessage());
+    }
+    
+    return nav;
+}
+```
+
+**容错原则**：
+
+- Redis操作必须包裹在try-catch中，异常不应中断业务流程
+- 缓存层的作用是加速，不是数据唯一来源。关键业务数据必须有数据库作为兜底
+- 设置合理的超时时间，避免线程长时间阻塞在Redis调用上
+- 使用断路器模式（如Resilience4j、Hystrix）在Redis持续异常时自动降级
+- Sentinel主从切换期间（通常10-60秒），应用应能自动重连
+
+![第4章：Redis 应用开发规范](assets/screenshots/chapter-04.png)
+
+图 4.1：Redis 开发规范全景——从Key设计、序列化、命令选择到容错降级的完整规范体系。
+
+> **检查点**：对现有代码执行一次Redis使用审查——检查是否存在`KEYS *`调用、未设TTL的缓存Key、超过1KB的String Value、循环单次Redis操作。这些问题必须在迁移前修复。
+
+---
+
+## 第5章 分阶段迁移实施方案
+
+### 5.1 阶段一：现状评估与基线采集（1-2周）
 
 迁移的第一步不是部署新实例，而是摸清现有环境的真实状况。需要采集以下数据：
 
@@ -301,7 +528,7 @@ redis-cli CLIENT LIST
 
 输出《各业务系统Redis用量评估表》，包含内存占用、Key数量、日均QPS、峰值QPS、大Key清单（超过10KB的Key列表及归属）、现有淘汰策略与TTL命中率。
 
-### 4.2 阶段二：基础设施准备（2-3周）
+### 5.2 阶段二：基础设施准备（2-3周）
 
 基于评估数据部署5套独立Redis实例。每个实例的核心配置：
 
@@ -330,7 +557,7 @@ rename-command DEBUG ""
 
 配套部署对应的Sentinel集群，验证主从切换功能。配置监控采集（详见第6章）和防火墙/安全组规则。
 
-### 4.3 阶段三：应用侧改造（2-3周）
+### 5.3 阶段三：应用侧改造（2-3周）
 
 应用侧需要完成以下改造：
 
@@ -343,7 +570,7 @@ rename-command DEBUG ""
 
 **TTL治理**：所有缓存类Key必须设置TTL，业务数据类Key明确过期策略。输出无TTL的Key清单并逐个处理。
 
-### 4.4 阶段四：数据迁移与业务切换（1-2周）
+### 5.4 阶段四：数据迁移与业务切换（1-2周）
 
 **推荐方案：离线迁移**，按业务逐一切换，每业务一个维护窗口。
 
@@ -361,11 +588,11 @@ rename-command DEBUG ""
 
 **在线迁移备选方案**：使用redis-shake工具进行增量同步，适用于不可停机的业务。核心步骤是在新实例建立与当前主库的同步关系，数据追平后短暂停止写入，切换全量至新实例。
 
-![第4章：分阶段迁移实施方案](assets/screenshots/chapter-04.png)
+![第5章：分阶段迁移实施方案](assets/screenshots/chapter-05.png)
 
-图 4.1：五个迁移阶段的完整流程，从评估到下线，每阶段有明确交付物。
+图 5.1：五个迁移阶段的完整流程，从评估到下线，每阶段有明确交付物。
 
-### 4.5 阶段五：存量实例下线与回滚保障
+### 5.5 阶段五：存量实例下线与回滚保障
 
 所有业务切换完成后：
 
@@ -379,9 +606,9 @@ rename-command DEBUG ""
 
 ---
 
-## 第5章 过渡期管控与大Key治理
+## 第6章 过渡期管控与大Key治理
 
-### 5.1 迁移窗口期内的应急管控措施
+### 6.1 迁移窗口期内的应急管控措施
 
 在物理隔离尚未完成前，需要立即落地以下管控措施来快速降低风险：
 
@@ -391,7 +618,7 @@ rename-command DEBUG ""
 
 **连接数管控**：各业务应用的连接池配置需要与实例`maxclients`匹配，避免单一业务耗尽所有连接。
 
-### 5.2 大Key识别与拆分治理
+### 6.2 大Key识别与拆分治理
 
 建立每日大Key巡检机制：
 
@@ -413,7 +640,7 @@ redis-cli --bigkeys -i 0.1 > /tmp/bigkeys_$(date +%Y%m%d).log
 - 大List → 改用分页存储或按时间分片
 - 大Set/ZSet → 按区间或分桶拆分
 
-### 5.3 淘汰策略紧急调整
+### 6.3 淘汰策略紧急调整
 
 过渡期内的淘汰策略调整原则：
 
@@ -422,17 +649,17 @@ redis-cli --bigkeys -i 0.1 > /tmp/bigkeys_$(date +%Y%m%d).log
 - 核心业务数据Key不设TTL，避免被误淘汰
 - 迁移完成后，每个业务按第3章的差异化策略独立配置
 
-![第5章：过渡期管控与大Key治理](assets/screenshots/chapter-05.png)
+![第6章：过渡期管控与大Key治理](assets/screenshots/chapter-06.png)
 
-图 5.1：按数据类型的大Key识别阈值与治理手段矩阵，以及过渡期淘汰策略的紧急调整方案。
+图 6.1：按数据类型的大Key识别阈值与治理手段矩阵，以及过渡期淘汰策略的紧急调整方案。
 
 > **检查点**：你的生产环境中是否存在超过100KB的Key？执行`redis-cli --bigkeys`统计一次，评估大Key治理的优先级。
 
 ---
 
-## 第6章 监控体系建设
+## 第7章 监控体系建设
 
-### 6.1 按业务维度的监控架构设计
+### 7.1 按业务维度的监控架构设计
 
 拆分后的监控架构分为三层：
 
@@ -442,7 +669,7 @@ redis-cli --bigkeys -i 0.1 > /tmp/bigkeys_$(date +%Y%m%d).log
 
 **看板展示层**：分为总览大盘和业务独立看板。总览大盘一眼看到所有实例的健康状态；业务看板支持下钻查看内存趋势、QPS曲线、慢查询分布等细节。
 
-### 6.2 核心监控指标与告警阈值
+### 7.2 核心监控指标与告警阈值
 
 | 类别 | 指标 | 告警阈值 | 说明 |
 |------|------|---------|------|
@@ -456,23 +683,23 @@ redis-cli --bigkeys -i 0.1 > /tmp/bigkeys_$(date +%Y%m%d).log
 | 淘汰 | `evicted_keys` | > 0 预警 | 表示内存不足 |
 | Key过期 | `expired_keys` | 突增告警 | 检测TTL设置异常 |
 
-### 6.3 Grafana 业务看板设计
+### 7.3 Grafana 业务看板设计
 
 **总览大盘**：以卡片形式展示每个业务实例的核心指标（内存使用率、QPS、延迟、健康状态），状态用绿/黄/红标识。支持从总览点击下钻到具体业务看板。
 
 **业务独立看板**：每个业务系统配置独立的Grafana Dashboard，包含内存趋势图、QPS曲线图、慢查询Top10排行、Key空间分布、主从同步状态等面板。
 
-![第6章：监控体系建设](assets/screenshots/chapter-06.png)
+![第7章：监控体系建设](assets/screenshots/chapter-07.png)
 
-图 6.2：三层监控架构——采集层、告警规则层、看板展示层，实现从实例级到业务级的精细化监控。
+图 7.1：三层监控架构——采集层、告警规则层、看板展示层，实现从实例级到业务级的精细化监控。
 
 > **检查点**：你的监控系统能否在1分钟内回答"当前Redis内存告警是哪个业务导致的"？如果不能，说明监控粒度需要细化。
 
 ---
 
-## 第7章 安全加固与长期治理机制
+## 第8章 安全加固与长期治理机制
 
-### 7.1 ACL 访问控制与网络隔离
+### 8.1 ACL 访问控制与网络隔离
 
 Redis 6.0及以上版本支持ACL（Access Control List），可以为每个业务创建独立的用户并限制其访问范围：
 
@@ -489,7 +716,7 @@ ACL SETUSER pension on >{强密码} ~pension:* +@all -@dangerous
 
 **网络隔离**：每个Redis实例绑定独立的内网地址，安全组规则仅允许对应业务的应用服务器IP访问。禁止Redis端口暴露至公网。
 
-### 7.2 Key命名规范与TTL治理
+### 8.2 Key命名规范与TTL治理
 
 **Key命名强制规范**：`{业务}:{模块}:{实体}:{ID}`
 
@@ -503,7 +730,7 @@ ACL SETUSER pension on >{强密码} ~pension:* +@all -@dangerous
 - 无TTL的Key需要白名单审批
 - 每周巡检无TTL的Key清单，清理僵尸数据
 
-### 7.3 Redis 使用准入与变更管理机制
+### 8.3 Redis 使用准入与变更管理机制
 
 建立长期治理的闭环机制，防止问题回潮：
 
@@ -522,9 +749,9 @@ ACL SETUSER pension on >{强密码} ~pension:* +@all -@dangerous
 - 应用上线前检查Redis使用模式（大Key检测、TTL检查、连接池配置合理性）
 - 建立Redis使用规范文档，作为新项目的必读材料
 
-![第7章：安全加固与长期治理机制](assets/screenshots/chapter-07.png)
+![第8章：安全加固与长期治理机制](assets/screenshots/chapter-08.png)
 
-图 7.1：三道安全防线（ACL、网络隔离、命名规范）配合准入-变更-审计的治理闭环，从源头防止风险回潮。
+图 8.1：三道安全防线（ACL、网络隔离、命名规范）配合准入-变更-审计的治理闭环，从源头防止风险回潮。
 
 > **检查点**：你的组织是否有Redis使用规范文档？新项目接入Redis是否需要经过架构评审？如果没有，本节的治理机制模板可以直接采用。
 
